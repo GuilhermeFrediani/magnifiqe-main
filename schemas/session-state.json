@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://magnifiqe.dev/schemas/session-state.json",
+  "title": "Session State",
+  "description": "Schema for persistent session state tracking",
+  "type": "object",
+  "required": ["goal", "current_subtask", "loaded_skills", "status", "plan", "assumptions", "blockers", "timestamp"],
+  "properties": {
+    "goal": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Primary goal of the session"
+    },
+    "current_subtask": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Currently active subtask within the goal"
+    },
+    "loaded_skills": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Skills that have been loaded in this session"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "paused", "completed"],
+      "description": "Current session status"
+    },
+    "plan": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Planned steps to achieve the goal"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Active assumptions being relied upon"
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Current blockers preventing progress"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last update"
+    }
+  },
+  "additionalProperties": false
+}

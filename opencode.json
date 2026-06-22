@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "./README.md",
+    "./ai-docs/compact-index.md",
+    "./ai-docs/bundle-index.md",
+    "./PROMPTS.md",
+    "./ai-rules/01-ai-workflow-strict.md",
+    "./ai-rules/03-token-economy.md"
+  ],
+  "mcp": {
+    "stack-perfeita": {
+      "type": "local",
+      "command": [
+        "npx",
+        "stack-perfeita-mcp",
+        "--project-root",
+        ".",
+        "--rules-dir",
+        "./ai-rules"
+      ],
+      "enabled": true
+    }
+  }
+}

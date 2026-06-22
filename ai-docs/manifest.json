@@ -1,0 +1,1836 @@
+{
+  "generated_at": "2026-06-20T21:04:43.493Z",
+  "file_count": 120,
+  "bundles": [
+    {
+      "fileName": "ai-docs/bundles/runtime-core.md",
+      "description": "Entrypoint, ativação, estado e compactação do runtime MCP.",
+      "fileCount": 6
+    },
+    {
+      "fileName": "ai-docs/bundles/council-runtime.md",
+      "description": "Council estruturado, Council Live, contratos de prompt e regras de deliberação.",
+      "fileCount": 6
+    },
+    {
+      "fileName": "ai-docs/bundles/integration.md",
+      "description": "Setup por IDE, manifesto de instruções, leitura AI-first e integração operacional.",
+      "fileCount": 14
+    },
+    {
+      "fileName": "ai-docs/bundles/ide-quickstart.md",
+      "description": "Preset enxuto para IDEs com prompt lean, config MCP portátil e instruções mínimas.",
+      "fileCount": 8
+    },
+    {
+      "fileName": "ai-docs/bundles/testing-validation.md",
+      "description": "Validação, smoke tests, stdio e comportamento de prova antes de declarar sucesso.",
+      "fileCount": 6
+    }
+  ],
+  "files": [
+    {
+      "path": "src/activation.js",
+      "kind": "js",
+      "lines": 378,
+      "bytes": 15242,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./project-state.js",
+        "./rate-limiter.js",
+        "./helpers.js"
+      ],
+      "exports": [
+        "registerActivationTools"
+      ],
+      "summary": "Stack Perfeita MCP — Project Activation activate_project MCP tool registration. Builds a complete project manifest: stack, rules, skills, state, fingerprint."
+    },
+    {
+      "path": "src/anti-hallucination.js",
+      "kind": "js",
+      "lines": 32,
+      "bytes": 1223,
+      "imports": [
+        "./verification.js",
+        "./watchdog.js",
+        "./caveman.js"
+      ],
+      "exports": [
+        "registerAntiHallucinationTools",
+        "registerVerificationTools",
+        "registerWatchdogTools",
+        "registerCavemanTools"
+      ],
+      "summary": "Stack Perfeita MCP — Anti-Hallucination orchestrator Thin delegation layer that registers all anti-hallucination tools by delegating to focused sub-modules: - verification.js: file/symbol verification, hallucination detection, groundedness scoring, incremental diff tracking - watchdog.js: output dedup tracking, session watchdog timing, test execution monitoring, session health diagnostics - caveman.js: output budget enforcement, caveman mode validation, auto-validation chain"
+    },
+    {
+      "path": "src/caveman.js",
+      "kind": "js",
+      "lines": 235,
+      "bytes": 9492,
+      "imports": [
+        "zod",
+        "fs",
+        "crypto",
+        "child_process",
+        "./helpers.js",
+        "./rate-limiter.js",
+        "./config.js"
+      ],
+      "exports": [
+        "registerCavemanTools"
+      ],
+      "summary": "Stack Perfeita MCP — Caveman tools Output budget enforcement, caveman mode validation, and auto-validation chain."
+    },
+    {
+      "path": "src/code-reading.js",
+      "kind": "js",
+      "lines": 683,
+      "bytes": 24363,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./helpers.js",
+        "./rate-limiter.js",
+        "acorn-loose",
+        "@babel/parser"
+      ],
+      "exports": [
+        "getFileLang",
+        "extractSymbolsAST",
+        "extractSymbols",
+        "extractSymbolBody",
+        "analyzeCodeMetrics",
+        "registerCodeReadingTools"
+      ],
+      "summary": "Stack Perfeita MCP — Code Reading tools smart_outline, smart_unfold, smart_read MCP tool registrations. Babel parser first, acorn-loose fallback, regex last."
+    },
+    {
+      "path": "src/commands.js",
+      "kind": "js",
+      "lines": 49,
+      "bytes": 1664,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./helpers.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "registerCommandsTools"
+      ],
+      "summary": "Stack Perfeita MCP — Command tool run_command MCP tool registration."
+    },
+    {
+      "path": "src/compaction.js",
+      "kind": "js",
+      "lines": 227,
+      "bytes": 7923,
+      "imports": [
+        "zod",
+        "./project-state.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "extractErrorsFromLogs",
+        "summarizeDiff",
+        "registerCompactionTools"
+      ],
+      "summary": "Stack Perfeita MCP — Compaction tools compact_conversation_state, compact_logs, compact_diff, promote_summary_to_checkpoint Semantic compaction for long sessions: preserve meaning, discard noise."
+    },
+    {
+      "path": "src/compression-orchestrator.js",
+      "kind": "js",
+      "lines": 221,
+      "bytes": 8529,
+      "imports": [
+        "zod",
+        "./compression/content-detector.js",
+        "./compression/ccr-hierarchy.js",
+        "./compression/store.js",
+        "./compression/cache-aligner.js",
+        "./interceptors/base.js",
+        "./compression/circuit-breaker.js",
+        "./compression/thresholds.js"
+      ],
+      "exports": [
+        "compressToolOutput",
+        "decompressOutput",
+        "getCompressionStats",
+        "registerCompressionTools"
+      ],
+      "summary": "Stack Perfeita MCP — Compression Orchestrator Wires the CCR pipeline (content-detector → cache-aligner → ccr-hierarchy → store) into a simple compress/decompress API for tool outputs. Flow: 1. CacheAligner detects volatile content (UUIDs, timestamps, JWTs) 2. ContentDetector determines content type 3. CCR hierarchy applies appropriate compression level 4. CompressionStore saves originals with sentinel markers 5. CircuitBreaker skips compression on repeated failures"
+    },
+    {
+      "path": "src/compression/cache-aligner.js",
+      "kind": "js",
+      "lines": 91,
+      "bytes": 3239,
+      "imports": [],
+      "exports": [
+        "detectVolatileContent",
+        "computePrefixHash",
+        "CacheAligner",
+        "cacheAligner"
+      ],
+      "summary": "Stack Perfeita MCP — CacheAligner (Detector-Only) Detects volatile content (UUIDs, timestamps, JWTs, hex hashes) in text. Does NOT mutate — emits warnings and tracks prefix stability. Port of Headroom's cache_aligner.py pattern."
+    },
+    {
+      "path": "src/compression/ccr-hierarchy.js",
+      "kind": "js",
+      "lines": 235,
+      "bytes": 8989,
+      "imports": [
+        "./content-detector.js",
+        "./thresholds.js",
+        "./store.js",
+        "./cache-aligner.js"
+      ],
+      "exports": [
+        "losslessCompress",
+        "structuralCompress",
+        "semanticCompress",
+        "aggressiveCompress",
+        "compress",
+        "CompressionLevel",
+        "recommendLevel",
+        "THRESHOLDS",
+        "ContentType",
+        "detectContentType",
+        "splitIntoSections",
+        "createSentinel",
+        "SENTINEL_KEY"
+      ],
+      "summary": "Stack Perfeita MCP — CCR Hierarchy (Compression-Compression-Restore) Unified 4-level compression pipeline: Level 1 (Lossless): strip HTML comments, collapse whitespace Level 2 (Structural): clip head/tail, preserve structure markers Level 3 (Semantic): extract key points, drop redundancy Level 4 (Aggressive): drop entire sections by priority Combines Headroom's content routing with Magnifiqe's existing minifyTokens/clipText."
+    },
+    {
+      "path": "src/compression/circuit-breaker.js",
+      "kind": "js",
+      "lines": 91,
+      "bytes": 2220,
+      "imports": [],
+      "exports": [
+        "CircuitState",
+        "CircuitBreaker",
+        "circuitBreaker"
+      ],
+      "summary": "Stack Perfeita MCP — Circuit Breaker After N consecutive pipeline failures, pass through without compression. Port of Headroom's pipeline.py circuit breaker pattern."
+    },
+    {
+      "path": "src/compression/content-detector.js",
+      "kind": "js",
+      "lines": 121,
+      "bytes": 3658,
+      "imports": [],
+      "exports": [
+        "ContentType",
+        "detectContentType",
+        "splitIntoSections"
+      ],
+      "summary": "Stack Perfeita MCP — Content Type Detector Detects content type of tool output for routing to appropriate compressor. Port of Headroom's content_detector.py pattern."
+    },
+    {
+      "path": "src/compression/store.js",
+      "kind": "js",
+      "lines": 141,
+      "bytes": 4249,
+      "imports": [
+        "crypto"
+      ],
+      "exports": [
+        "SENTINEL_KEY",
+        "isCcrSentinel",
+        "createSentinel",
+        "CompressionStore",
+        "compressionStore"
+      ],
+      "summary": "Stack Perfeita MCP — CCR Reversible Compression Store Stores original content with hash key, emits sentinel markers in compressed output. LLM can retrieve originals on demand via magnifiqe_retrieve(hash). Port of Headroom's compression_store.py + smart_crusher.py sentinel pattern."
+    },
+    {
+      "path": "src/compression/thresholds.js",
+      "kind": "js",
+      "lines": 85,
+      "bytes": 3187,
+      "imports": [],
+      "exports": [
+        "CompressionLevel",
+        "THRESHOLDS",
+        "ACCURACY_TARGETS",
+        "recommendLevel",
+        "evaluateCompressionNeed"
+      ],
+      "summary": "Stack Perfeita MCP — Compression Thresholds Evidence-based thresholds from Headroom benchmarks: - 19-32% compression → 97% accuracy (SQuAD v2 / BFCL) - 90%+ compression → viable for code search, SRE debugging - Code search: 17,765 → 1,408 tokens (92% reduction) - SRE debugging: 65,694 → 5,118 tokens (92% reduction)"
+    },
+    {
+      "path": "src/config.js",
+      "kind": "js",
+      "lines": 195,
+      "bytes": 11858,
+      "imports": [
+        "fs",
+        "path",
+        "url"
+      ],
+      "exports": [
+        "ROOT_DIR",
+        "PROJECT_ROOT",
+        "BUNDLED_RULES_DIR",
+        "RULES_DIR",
+        "SRC_DIR",
+        "SKILLS_DIR",
+        "COMMANDS_DIR",
+        "MEMORY_FILE",
+        "PROJECT_STATE_FILE",
+        "COUNCIL_STATE_FILE",
+        "STATE_LIMITS",
+        "TOPIC_MAP",
+        "RULE_DESCRIPTIONS",
+        "BAD_PATTERNS",
+        "RESPONSE_STYLE_PATTERNS",
+        "NODE_BUILTINS"
+      ],
+      "summary": "Stack Perfeita MCP — Configuration All constants, topic maps, rule descriptions, response-style rules, and bad-code patterns."
+    },
+    {
+      "path": "src/council-gate.js",
+      "kind": "js",
+      "lines": 108,
+      "bytes": 3282,
+      "imports": [],
+      "exports": [
+        "evaluateCouncilNeed",
+        "formatGateResult"
+      ],
+      "summary": "Council Gate — scoring heuristic and formatting for council_need evaluation. Decides whether a task warrants full council deliberation."
+    },
+    {
+      "path": "src/council-json.js",
+      "kind": "js",
+      "lines": 161,
+      "bytes": 6079,
+      "imports": [
+        "./helpers.js"
+      ],
+      "exports": [
+        "stripCodeFences",
+        "replaceSmartQuotes",
+        "extractJsonCandidate",
+        "sanitizeJsonCandidate",
+        "serializePretty",
+        "parseLooseJson",
+        "normalizeCouncilJsonPayload"
+      ],
+      "summary": "@module council-json JSON parsing, normalization, and repair utilities for Council Live."
+    },
+    {
+      "path": "src/council-orchestrator.js",
+      "kind": "js",
+      "lines": 443,
+      "bytes": 18633,
+      "imports": [
+        "zod",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "resolveLiveMode",
+        "buildLivePlanText",
+        "createDeepSession",
+        "registerCouncilLiveTools"
+      ],
+      "summary": "@module council-orchestrator Session management, plan building, and tool registration for Council Live."
+    },
+    {
+      "path": "src/council-prompts.js",
+      "kind": "js",
+      "lines": 341,
+      "bytes": 12379,
+      "imports": [
+        "zod",
+        "./helpers.js",
+        "./council.js"
+      ],
+      "exports": [
+        "LIVE_MODE_VALUES",
+        "PROMPT_STAGE_VALUES",
+        "REVIEW_VERDICTS",
+        "CHAIRMAN_CONFIDENCE",
+        "SCORE_MIN",
+        "SCORE_MAX",
+        "MAX_LIST_ITEMS",
+        "SIMPLE_IO_SYSTEM_PROMPT",
+        "normalizeText",
+        "normalizeBot",
+        "toArray",
+        "normalizeList",
+        "toInteger",
+        "clamp",
+        "titleCaseBot",
+        "formatConstraints",
+        "renderContextBlock",
+        "formatGate",
+        "buildPositionSchemaExample",
+        "buildReviewSchemaExample",
+        "buildChairmanSchemaExample",
+        "buildSharedPromptRules",
+        "buildPositionPrompt",
+        "buildReviewPrompt",
+        "buildChairmanPrompt",
+        "buildIoFinalPrompt",
+        "buildSimpleExecutionPrompt",
+        "positionSchema",
+        "reviewSchema",
+        "chairmanSchema"
+      ],
+      "summary": "@module council-prompts Prompt building, constants, Zod schemas, and schema examples for Council Live."
+    },
+    {
+      "path": "src/council-session.js",
+      "kind": "js",
+      "lines": 430,
+      "bytes": 14736,
+      "imports": [
+        "fs",
+        "./config.js",
+        "./helpers.js",
+        "./council-gate.js",
+        "./council-prompts.js"
+      ],
+      "exports": [
+        "COUNCIL_BOT_ORDER",
+        "CHAIRMAN_LABEL",
+        "FAILURE_COST_VALUES",
+        "BLAST_RADIUS_VALUES",
+        "MODE_VALUES",
+        "COUNCIL_BOT_BRIEFS",
+        "defaultCouncilState",
+        "seededShuffle",
+        "buildPeerReviewMatrix",
+        "createSessionId",
+        "buildCouncilSession",
+        "loadCouncilState",
+        "saveCouncilState",
+        "findSession",
+        "ensureSession",
+        "countCompletedPositions",
+        "countCompletedReviews",
+        "refreshSessionStatus",
+        "upsertCouncilPosition",
+        "upsertCouncilReview",
+        "formatSessionList",
+        "formatSession"
+      ],
+      "summary": "Council Session — constants, bot briefs, session CRUD, position/review upsert, and formatting. Core data layer for council deliberation workflow."
+    },
+    {
+      "path": "src/council-synthesis.js",
+      "kind": "js",
+      "lines": 196,
+      "bytes": 8278,
+      "imports": [
+        "./council-prompts.js",
+        "./helpers.js"
+      ],
+      "exports": [
+        "average",
+        "collectConsensusTags",
+        "buildPositionScorecard",
+        "deriveDisagreements",
+        "deriveDiscardedIdeas",
+        "deriveConfidence",
+        "synthesizeCouncilSession",
+        "formatSynthesis"
+      ],
+      "summary": "Council Synthesis — deterministic synthesis of council positions and peer reviews. Produces consensus, disagreements, discarded ideas, risk ranking, and recommended next step."
+    },
+    {
+      "path": "src/council.js",
+      "kind": "js",
+      "lines": 328,
+      "bytes": 15060,
+      "imports": [
+        "zod",
+        "./rate-limiter.js",
+        "./council-gate.js",
+        "./council-prompts.js",
+        "./council-synthesis.js"
+      ],
+      "exports": [
+        "registerCouncilTools",
+        "evaluateCouncilNeed",
+        "COUNCIL_BOT_ORDER",
+        "COUNCIL_BOT_BRIEFS",
+        "defaultCouncilState",
+        "buildCouncilSession",
+        "loadCouncilState",
+        "saveCouncilState",
+        "upsertCouncilPosition",
+        "upsertCouncilReview",
+        "synthesizeCouncilSession"
+      ],
+      "summary": "Council Orchestrator — thin coordination layer that wires council modules to MCP tool registration. All business logic lives in: - council-gate.js      (gate scoring) - council-session.js   (session CRUD, constants, utilities) - council-synthesis.js (deterministic synthesis)"
+    },
+    {
+      "path": "src/dependency-resolution.js",
+      "kind": "js",
+      "lines": 712,
+      "bytes": 20608,
+      "imports": [
+        "./config.js"
+      ],
+      "exports": [
+        "detectProjectContext",
+        "validateFileDependencies"
+      ],
+      "summary": "Stack Perfeita MCP — Dependency resolution helpers Monorepo/workspace-aware import and asset validation."
+    },
+    {
+      "path": "src/helpers.js",
+      "kind": "js",
+      "lines": 190,
+      "bytes": 5530,
+      "imports": [
+        "fs",
+        "path",
+        "./config.js"
+      ],
+      "exports": [
+        "safeResolvePath",
+        "readFile",
+        "minifyTokens",
+        "atomicWrite",
+        "validateAbsolutePath",
+        "normalizeText",
+        "toArray",
+        "normalizeList",
+        "listRuleFiles",
+        "getRuleByTopic",
+        "formatRuleList",
+        "parseSkillFrontmatter",
+        "serializePretty"
+      ],
+      "summary": "Stack Perfeita MCP — Helper utilities File reading, path safety, token minification, rule file listing."
+    },
+    {
+      "path": "src/index.js",
+      "kind": "js",
+      "lines": 190,
+      "bytes": 8534,
+      "imports": [
+        "@modelcontextprotocol/sdk/server/mcp.js",
+        "@modelcontextprotocol/sdk/server/stdio.js",
+        "zod",
+        "path",
+        "./config.js",
+        "./helpers.js",
+        "./resources.js",
+        "./rules.js",
+        "./validators.js",
+        "./skills.js",
+        "./code-reading.js",
+        "./commands.js",
+        "./memory.js",
+        "./project-state.js",
+        "./compaction.js",
+        "./profiles.js",
+        "./roles.js",
+        "./task-runtime.js",
+        "./activation.js",
+        "./council.js",
+        "./council-orchestrator.js",
+        "./anti-hallucination.js",
+        "./compression-orchestrator.js",
+        "./ttsr-manager.js",
+        "./learn-trigger.js",
+        "./phase1-tools.js",
+        "./observability/logger.js",
+        "./observability/metrics.js",
+        "./safety-guards.js"
+      ],
+      "exports": [],
+      "summary": "stack-perfeita-mcp v4.8.0 MCP server that exposes project AI rules as tools for any IDE/agent. Architecture: Modular — each tool category lives in its own file under src/. This file is the entry point: it wires everything together and starts the server. Registered modules: Core:       resources, rules, validators, skills, code-reading, commands, memory, project-state, compaction, profiles, roles, task-runtime, activation, council, council-live, anti-hallucination New:        compression-orchestrator (CCR pipeline), ttsr-manager (TTSR rules), learn-trigger (headroom_learn periodic cycle) Inline:     compress_markdown (CCR-enhanced) Usage: node src/index.js --rules-dir /path/to/ai-rules"
+    },
+    {
+      "path": "src/interceptors/base.js",
+      "kind": "js",
+      "lines": 104,
+      "bytes": 3555,
+      "imports": [],
+      "exports": [
+        "interceptorRegistry",
+        "codeOutlineInterceptor",
+        "logFilterInterceptor"
+      ],
+      "summary": "Stack Perfeita MCP — Tool Result Interceptor Protocol Defines the interface for compressing specific tool outputs before general compression. Port of Headroom's ToolResultInterceptor pattern."
+    },
+    {
+      "path": "src/learn-trigger.js",
+      "kind": "js",
+      "lines": 121,
+      "bytes": 3911,
+      "imports": [
+        "./learn/analyzer.js",
+        "./learn/writer.js",
+        "./config.js",
+        "path"
+      ],
+      "exports": [
+        "LearnTrigger",
+        "learnTrigger",
+        "registerLearnTools"
+      ],
+      "summary": "Stack Perfeita MCP — Learn Trigger Periodic and on-demand triggers for the headroom_learn cycle. Scans .claude/ sessions, analyzes patterns, writes recommendations."
+    },
+    {
+      "path": "src/learn/analyzer.js",
+      "kind": "js",
+      "lines": 95,
+      "bytes": 2892,
+      "imports": [
+        "./scanner.js"
+      ],
+      "exports": [
+        "analyzeSessions",
+        "getAnalysisPrompt",
+        "parseRecommendations"
+      ],
+      "summary": "Stack Perfeita MCP — Session Analyzer (headroom_learn pattern) Analyzes session data to learn from failures and improve rules. Offline learning loop: collect → digest → analyze → recommend. Port of Headroom's analyzer.py pattern."
+    },
+    {
+      "path": "src/learn/scanner.js",
+      "kind": "js",
+      "lines": 107,
+      "bytes": 3001,
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "exports": [
+        "scanSessions",
+        "buildDigest"
+      ],
+      "summary": "Stack Perfeita MCP — Session Scanner Discovers and parses session data from .claude/ directory. Port of Headroom's scanner.py pattern."
+    },
+    {
+      "path": "src/learn/writer.js",
+      "kind": "js",
+      "lines": 75,
+      "bytes": 2335,
+      "imports": [
+        "../helpers.js"
+      ],
+      "exports": [
+        "writeRecommendations",
+        "formatRecommendationSummary"
+      ],
+      "summary": "Stack Perfeita MCP — Recommendation Writer Writes learned corrections to memory/state files. Port of Headroom's writer.py pattern."
+    },
+    {
+      "path": "src/memory.js",
+      "kind": "js",
+      "lines": 95,
+      "bytes": 3029,
+      "imports": [
+        "zod",
+        "fs",
+        "./config.js",
+        "./rate-limiter.js",
+        "./helpers.js"
+      ],
+      "exports": [
+        "registerMemoryTools"
+      ],
+      "summary": "Stack Perfeita MCP — Memory tools save_observation, search_observations. Uses JSON file persistence with simple dedupe + trimming."
+    },
+    {
+      "path": "src/observability/logger.js",
+      "kind": "js",
+      "lines": 78,
+      "bytes": 1874,
+      "imports": [],
+      "exports": [
+        "LogLevel",
+        "logger"
+      ],
+      "summary": "Stack Perfeita MCP — Structured Logger Replaces ad-hoc stderr writes with structured logging. All output goes to stderr (stdout reserved for JSON-RPC)."
+    },
+    {
+      "path": "src/observability/metrics.js",
+      "kind": "js",
+      "lines": 166,
+      "bytes": 6792,
+      "imports": [],
+      "exports": [
+        "metrics"
+      ],
+      "summary": "Stack Perfeita MCP — Metrics (OpenTelemetry-inspired) Counters, histograms, and gauges for compression, council, and tool performance. Port of Headroom's headroom_otel_metrics.py pattern."
+    },
+    {
+      "path": "src/phase1-tools.js",
+      "kind": "js",
+      "lines": 135,
+      "bytes": 5844,
+      "imports": [
+        "zod",
+        "./safety-guards.js",
+        "./semantic-compression.js",
+        "./prompt-standards.js"
+      ],
+      "exports": [
+        "registerSemanticCompressionTools",
+        "registerPromptStandardsTools"
+      ],
+      "summary": "@module phase1-tools Phase 1 tool registrations: Semantic Compression + Prompt Standards."
+    },
+    {
+      "path": "src/profiles.js",
+      "kind": "js",
+      "lines": 244,
+      "bytes": 10565,
+      "imports": [
+        "zod",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "PROFILES",
+        "MODEL_ALIASES",
+        "resolveProfile",
+        "registerProfilesTools"
+      ],
+      "summary": "Stack Perfeita MCP — Model Profiles get_model_profile MCP tool registration. Adapts behavior by provider family and operational capability profile."
+    },
+    {
+      "path": "src/project-state.js",
+      "kind": "js",
+      "lines": 352,
+      "bytes": 11608,
+      "imports": [
+        "zod",
+        "fs",
+        "./config.js",
+        "./rate-limiter.js",
+        "./state-compaction.js",
+        "./helpers.js"
+      ],
+      "exports": [
+        "VALID_SECTIONS",
+        "defaultState",
+        "loadState",
+        "saveState",
+        "registerProjectStateTools"
+      ],
+      "summary": "Stack Perfeita MCP — Project State tools get_project_state, save_project_state, checkpoint_task, list_checkpoints, resume_task"
+    },
+    {
+      "path": "src/prompt-standards.js",
+      "kind": "js",
+      "lines": 278,
+      "bytes": 10313,
+      "imports": [],
+      "exports": [
+        "validatePromptStandards",
+        "enforceDensity",
+        "extractDirectives",
+        "checkCriticalPlacement",
+        "analyzeAntiPatterns",
+        "analyzePrompt"
+      ],
+      "summary": "@module prompt-standards RFC 2119 prompt conventions and density rules. Based on the OMP System Prompts pattern: Dense, imperative, RFC-keyed. Tags carry semantics."
+    },
+    {
+      "path": "src/prompts/council-deliberation.md",
+      "kind": "md",
+      "lines": 31,
+      "bytes": 1036,
+      "imports": [],
+      "exports": [],
+      "summary": "Markdown document"
+    },
+    {
+      "path": "src/rate-limiter.js",
+      "kind": "js",
+      "lines": 41,
+      "bytes": 1224,
+      "imports": [],
+      "exports": [
+        "rateLimiter"
+      ],
+      "summary": "Stack Perfeita MCP — Rate Limiter Prevents tool call loops by enforcing a max-calls-per-window policy. Includes a global rate limit across all tools."
+    },
+    {
+      "path": "src/resources.js",
+      "kind": "js",
+      "lines": 155,
+      "bytes": 4181,
+      "imports": [
+        "./config.js",
+        "./helpers.js",
+        "fs"
+      ],
+      "exports": [
+        "registerResources"
+      ],
+      "summary": "Stack Perfeita MCP — MCP Resource registrations Exposes ai-rules/*.md as MCP resources for discovery and reading."
+    },
+    {
+      "path": "src/roles.js",
+      "kind": "js",
+      "lines": 187,
+      "bytes": 7689,
+      "imports": [
+        "zod",
+        "./profiles.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "registerRolesTools",
+        "ROLE_PRESETS",
+        "adaptPreset"
+      ],
+      "summary": "Stack Perfeita MCP — Role activation activate_role MCP tool registration. Applies role-specific scaffolding adapted by model capability profile."
+    },
+    {
+      "path": "src/rules.js",
+      "kind": "js",
+      "lines": 252,
+      "bytes": 9661,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./helpers.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "registerRulesTools"
+      ],
+      "summary": "Stack Perfeita MCP — Rules tools list_rules, get_rules, get_context MCP tool registrations."
+    },
+    {
+      "path": "src/safety-guards.js",
+      "kind": "js",
+      "lines": 215,
+      "bytes": 7361,
+      "imports": [
+        "crypto",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "checkRateLimit",
+        "getRateLimitStatus",
+        "trackOutput",
+        "isDuplicateOutput",
+        "getDedupStats",
+        "filterExpiredSessions",
+        "trackToolCall",
+        "resetLoopDetection",
+        "validateOutput",
+        "checkOutputOnly"
+      ],
+      "summary": "Stack Perfeita MCP — Safety Guards Enhanced rate limiting, output dedup, session TTL, and anti-loop protections. Addresses gaps identified in the PLANO.txt audit: - Rate limiter: adds global limit (not just per-tool) - Output dedup: SHA-256 hash ring for detecting repeated LLM outputs - Session TTL: auto-expire old council sessions - Loop detection: pattern-based detection of repeated tool calls"
+    },
+    {
+      "path": "src/semantic-compression.js",
+      "kind": "js",
+      "lines": 232,
+      "bytes": 8704,
+      "imports": [],
+      "exports": [
+        "semanticCompress",
+        "getCompressionStats",
+        "classifyTokens"
+      ],
+      "summary": "@module semantic-compression LLM-aware semantic compression with three deletion tiers. Based on the OMP Semantic Compression pattern: LLMs reconstruct grammar from content words — remove predictable glue, keep semantic payload. Prefer fragments over sentences."
+    },
+    {
+      "path": "src/skills.js",
+      "kind": "js",
+      "lines": 100,
+      "bytes": 3390,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./helpers.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "registerSkillsTools"
+      ],
+      "summary": "Stack Perfeita MCP — Skills tools list_skills and get_skill MCP tool registrations."
+    },
+    {
+      "path": "src/state-compaction.js",
+      "kind": "js",
+      "lines": 189,
+      "bytes": 5961,
+      "imports": [
+        "./config.js"
+      ],
+      "exports": [
+        "clipText",
+        "measureStateSize",
+        "autoCompactState"
+      ],
+      "summary": "Stack Perfeita MCP — Automatic project state compaction Predictable trimming when state grows beyond configured thresholds."
+    },
+    {
+      "path": "src/task-runtime.js",
+      "kind": "js",
+      "lines": 162,
+      "bytes": 5704,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "TASK_RUNTIME_FILE",
+        "defaultTaskRuntime",
+        "loadTaskRuntime",
+        "saveTaskRuntime",
+        "registerTaskRuntimeTools"
+      ],
+      "summary": "Stack Perfeita MCP — Task runtime start_task_contract and assert_step_evidence MCP tool registrations."
+    },
+    {
+      "path": "src/ttsr-manager.js",
+      "kind": "js",
+      "lines": 116,
+      "bytes": 3512,
+      "imports": [
+        "zod",
+        "./ttsr/halt-bridge.js",
+        "./ttsr/settings.js",
+        "./rate-limiter.js"
+      ],
+      "exports": [
+        "ttsrManager",
+        "registerTtsrTools",
+        "TtsrManager"
+      ],
+      "summary": "Stack Perfeita MCP — TTSR Manager Bridges the TTSR engine into the MCP server as managed tools. Exposes ttsr_check_output and ttsr_stats for runtime rule monitoring."
+    },
+    {
+      "path": "src/ttsr/halt-bridge.js",
+      "kind": "js",
+      "lines": 91,
+      "bytes": 2812,
+      "imports": [
+        "./ttsr-engine.js",
+        "./settings.js",
+        "../config.js"
+      ],
+      "exports": [
+        "createHaltTtsrEngine",
+        "processHaltTrigger",
+        "withTtsrMonitoring"
+      ],
+      "summary": "Stack Perfeita MCP — TTSR-HALT Integration Bridge Connects TTSR engine with existing HALT patterns from config.js BAD_PATTERNS. Converts BAD_PATTERNS regex entries into TTSR rules for lazy-loaded monitoring."
+    },
+    {
+      "path": "src/ttsr/interrupt-template.md",
+      "kind": "md",
+      "lines": 15,
+      "bytes": 518,
+      "imports": [],
+      "exports": [],
+      "summary": "Markdown document"
+    },
+    {
+      "path": "src/ttsr/rule-types.js",
+      "kind": "js",
+      "lines": 113,
+      "bytes": 3851,
+      "imports": [],
+      "exports": [
+        "RuleBucket",
+        "classifyRule",
+        "bucketRules",
+        "parseRule"
+      ],
+      "summary": "Stack Perfeita MCP — TTSR Rule Types + Bucket Routing Defines rule schema and routing logic (TTSR vs rulebook vs always-apply). Port of OMP's rule.ts + rule-buckets.ts pattern."
+    },
+    {
+      "path": "src/ttsr/settings.js",
+      "kind": "js",
+      "lines": 84,
+      "bytes": 2145,
+      "imports": [],
+      "exports": [
+        "ContextMode",
+        "InterruptMode",
+        "RepeatMode",
+        "DEFAULT_SETTINGS",
+        "HALT_TTSR_RULES"
+      ],
+      "summary": "Stack Perfeita MCP — TTSR Settings Configuration schema for TTSR behavior. Port of OMP's TtsrSettings pattern."
+    },
+    {
+      "path": "src/ttsr/ttsr-engine.js",
+      "kind": "js",
+      "lines": 233,
+      "bytes": 6314,
+      "imports": [
+        "./rule-types.js"
+      ],
+      "exports": [
+        "TtsrEngine",
+        "buildInjectionPayload"
+      ],
+      "summary": "Stack Perfeita MCP — TTSR Engine (Time-Traveling Streamed Rules) Monitors LLM output against registered regex/AST conditions. When a rule fires: abort → inject corrective reminder → retry. Port of OMP's TtsrManager pattern adapted for MCP server context."
+    },
+    {
+      "path": "src/validators.js",
+      "kind": "js",
+      "lines": 326,
+      "bytes": 12112,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "./config.js",
+        "./helpers.js",
+        "./rate-limiter.js",
+        "./code-reading.js",
+        "./dependency-resolution.js"
+      ],
+      "exports": [
+        "analyzeResponseStyle",
+        "registerValidatorsTools",
+        "buildCodeValidationReport"
+      ],
+      "summary": "Stack Perfeita MCP — Validator tools validate_bad_code, validate_response_style, validate_git_commit, dependency_validate."
+    },
+    {
+      "path": "src/verification.js",
+      "kind": "js",
+      "lines": 284,
+      "bytes": 13000,
+      "imports": [
+        "zod",
+        "fs",
+        "path",
+        "crypto",
+        "./helpers.js",
+        "./rate-limiter.js",
+        "./config.js"
+      ],
+      "exports": [
+        "registerVerificationTools"
+      ],
+      "summary": "Stack Perfeita MCP — Verification tools File/symbol verification, hallucination detection, groundedness scoring, and incremental diff tracking."
+    },
+    {
+      "path": "src/watchdog.js",
+      "kind": "js",
+      "lines": 274,
+      "bytes": 11310,
+      "imports": [
+        "zod",
+        "child_process",
+        "./helpers.js",
+        "./rate-limiter.js",
+        "./config.js",
+        "./safety-guards.js"
+      ],
+      "exports": [
+        "registerWatchdogTools"
+      ],
+      "summary": "Stack Perfeita MCP — Watchdog tools Output dedup tracking, session watchdog timing, test execution monitoring, and session health diagnostics."
+    },
+    {
+      "path": "ai-rules/00-project-overview.md",
+      "kind": "md",
+      "lines": 42,
+      "bytes": 2541,
+      "imports": [],
+      "exports": [],
+      "summary": "00 - Project Overview & Stack Manifest (The Domain Map)"
+    },
+    {
+      "path": "ai-rules/01-ai-workflow-strict.md",
+      "kind": "md",
+      "lines": 45,
+      "bytes": 1727,
+      "imports": [],
+      "exports": [],
+      "summary": "AIPIHKAL Protocol: Strict Workflow for Real Tasks"
+    },
+    {
+      "path": "ai-rules/02-coding-standards.md",
+      "kind": "md",
+      "lines": 62,
+      "bytes": 3770,
+      "imports": [],
+      "exports": [],
+      "summary": "02 - Coding Standards (O Estilo Caveman)"
+    },
+    {
+      "path": "ai-rules/03-token-economy.md",
+      "kind": "md",
+      "lines": 41,
+      "bytes": 1775,
+      "imports": [],
+      "exports": [],
+      "summary": "03 - Token Economy & Context Management (2026)"
+    },
+    {
+      "path": "ai-rules/04-security-secrets.md",
+      "kind": "md",
+      "lines": 36,
+      "bytes": 2644,
+      "imports": [],
+      "exports": [],
+      "summary": "04 - Segurança Moderna e OWASP (2025/2026)"
+    },
+    {
+      "path": "ai-rules/05-debugging-mastery.md",
+      "kind": "md",
+      "lines": 50,
+      "bytes": 2810,
+      "imports": [],
+      "exports": [],
+      "summary": "05 - Debugging Mastery (Anti-Guesswork for JS/TS)"
+    },
+    {
+      "path": "ai-rules/06-ci-cd-testing.md",
+      "kind": "md",
+      "lines": 51,
+      "bytes": 2983,
+      "imports": [],
+      "exports": [],
+      "summary": "06 - CI/CD Moderno: Pipeline como Produto (2026)"
+    },
+    {
+      "path": "ai-rules/07-frontend-semantic.md",
+      "kind": "md",
+      "lines": 56,
+      "bytes": 3799,
+      "imports": [],
+      "exports": [],
+      "summary": "07 - Frontend Semântico e Acessibilidade (2026)"
+    },
+    {
+      "path": "ai-rules/08-backend-architecture.md",
+      "kind": "md",
+      "lines": 41,
+      "bytes": 3232,
+      "imports": [],
+      "exports": [],
+      "summary": "08 - Arquitetura de Produção e Backend Semântico (2026)"
+    },
+    {
+      "path": "ai-rules/09-bad-patterns-halt.md",
+      "kind": "md",
+      "lines": 55,
+      "bytes": 3372,
+      "imports": [],
+      "exports": [],
+      "summary": "09 - Fundações Podres e Padrões Ruins (Halt no Bad Code)"
+    },
+    {
+      "path": "ai-rules/10-llm-behavioral-rules.md",
+      "kind": "md",
+      "lines": 58,
+      "bytes": 1989,
+      "imports": [],
+      "exports": [],
+      "summary": "10 - Universal Behavioral Rules for LLMs"
+    },
+    {
+      "path": "ai-rules/11-systematic-debugging.md",
+      "kind": "md",
+      "lines": 30,
+      "bytes": 1884,
+      "imports": [],
+      "exports": [],
+      "summary": "11 - Systematic Debugging (O Método de 4 Fases)"
+    },
+    {
+      "path": "ai-rules/12-council-deliberation.md",
+      "kind": "md",
+      "lines": 86,
+      "bytes": 3215,
+      "imports": [],
+      "exports": [],
+      "summary": "Council Deliberation Protocol"
+    },
+    {
+      "path": "ai-rules/13-live-council-runtime.md",
+      "kind": "md",
+      "lines": 112,
+      "bytes": 3432,
+      "imports": [],
+      "exports": [],
+      "summary": "Live Council Runtime"
+    },
+    {
+      "path": "ai-rules/14-modular-frontend.md",
+      "kind": "md",
+      "lines": 196,
+      "bytes": 6205,
+      "imports": [],
+      "exports": [],
+      "summary": "14 - Arquitetura Modular FrontEnd (CSS e HTML Organizados)"
+    },
+    {
+      "path": "ai-rules/15-modular-backend.md",
+      "kind": "md",
+      "lines": 128,
+      "bytes": 4689,
+      "imports": [],
+      "exports": [],
+      "summary": "15 - Arquitetura Modular BackEnd (Serviços Organizados e Escaláveis)"
+    },
+    {
+      "path": "ai-rules/16-debug-discipline.md",
+      "kind": "md",
+      "lines": 65,
+      "bytes": 2700,
+      "imports": [],
+      "exports": [],
+      "summary": "16 - Disciplina de Debug (Encontre o Problema Antes de Consertar)"
+    },
+    {
+      "path": "ai-rules/17-anti-complexity.md",
+      "kind": "md",
+      "lines": 107,
+      "bytes": 3862,
+      "imports": [],
+      "exports": [],
+      "summary": "17 - Anti-Complexidade (Código Limpo Não Tem Peso)"
+    },
+    {
+      "path": "ai-rules/commands/code-analysis.md",
+      "kind": "md",
+      "lines": 11,
+      "bytes": 518,
+      "imports": [],
+      "exports": [],
+      "summary": "Code Analysis Command"
+    },
+    {
+      "path": "bin/setup-ide.js",
+      "kind": "js",
+      "lines": 215,
+      "bytes": 7711,
+      "imports": [
+        "fs",
+        "path",
+        "url"
+      ],
+      "exports": [],
+      "summary": "stack-perfeita setup script Generates IDE configuration files and can bootstrap starter rules/skills. Usage: stack-perfeita                 # Generate IDE config files only stack-perfeita init            # Generate configs + starter ai-rules + starter skills stack-perfeita --bootstrap     # Same as init stack-perfeita --minimal       # Only .cursorrules stack-perfeita --lean          # Generate lean prompt/config for lower token usage stack-perfeita --force         # Overwrite existing files"
+    },
+    {
+      "path": "test/activation.test.js",
+      "kind": "js",
+      "lines": 247,
+      "bytes": 10375,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/activation.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/activation.js Tests: tool registration, activate_project manifest, doctor_runtime_setup diagnostics, get_prompt_script sections, generateFingerprint consistency"
+    },
+    {
+      "path": "test/code-reading-handlers.test.js",
+      "kind": "js",
+      "lines": 393,
+      "bytes": 12782,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/code-reading.js"
+      ],
+      "exports": [
+        "greet",
+        "add",
+        "formatDate"
+      ],
+      "summary": "Handler-level tests for src/code-reading.js MCP tools. Exercises smart_outline, smart_unfold, smart_read via mock server."
+    },
+    {
+      "path": "test/code-reading-phase2.test.js",
+      "kind": "js",
+      "lines": 60,
+      "bytes": 1685,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/code-reading.js"
+      ],
+      "exports": [
+        "UserService",
+        "build",
+        "sum"
+      ],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/code-reading.test.js",
+      "kind": "js",
+      "lines": 199,
+      "bytes": 6290,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/code-reading.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/code-reading.js Tests: extractSymbols, getFileLang"
+    },
+    {
+      "path": "test/compaction-handlers.test.js",
+      "kind": "js",
+      "lines": 200,
+      "bytes": 7042,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/compaction.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/compaction.js MCP tools. Uses createMockServer pattern to invoke handlers directly."
+    },
+    {
+      "path": "test/compaction.test.js",
+      "kind": "js",
+      "lines": 96,
+      "bytes": 2838,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/compaction.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/compaction.js Tests: extractErrorsFromLogs, summarizeDiff"
+    },
+    {
+      "path": "test/compression-orchestrator.test.js",
+      "kind": "js",
+      "lines": 178,
+      "bytes": 7630,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/compression/circuit-breaker.js",
+        "../src/compression/cache-aligner.js",
+        "../src/compression/store.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/compression-orchestrator.js Tests: compressToolOutput, decompressOutput, getCompressionStats"
+    },
+    {
+      "path": "test/config.test.js",
+      "kind": "js",
+      "lines": 134,
+      "bytes": 4804,
+      "imports": [
+        "node:test",
+        "node:assert"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/config.js Tests: TOPIC_MAP coverage, RULE_DESCRIPTIONS keys, BAD_PATTERNS structure"
+    },
+    {
+      "path": "test/council-handlers.test.js",
+      "kind": "js",
+      "lines": 87,
+      "bytes": 3048,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/council.js"
+      ],
+      "exports": [],
+      "summary": "Either lists sessions or shows empty message"
+    },
+    {
+      "path": "test/council-live-handlers.test.js",
+      "kind": "js",
+      "lines": 224,
+      "bytes": 7751,
+      "imports": [
+        "node:test",
+        "node:assert/strict",
+        "../src/council-orchestrator.js",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/council-live.test.js",
+      "kind": "js",
+      "lines": 71,
+      "bytes": 2817,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/council-json.js",
+        "../src/council-orchestrator.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/council.test.js",
+      "kind": "js",
+      "lines": 197,
+      "bytes": 8499,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/dependency-resolution.test.js",
+      "kind": "js",
+      "lines": 110,
+      "bytes": 4281,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/dependency-resolution.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/e2e-stdio.test.js",
+      "kind": "js",
+      "lines": 78,
+      "bytes": 2872,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "node:child_process",
+        "node:path"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/helpers.test.js",
+      "kind": "js",
+      "lines": 90,
+      "bytes": 2741,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "os",
+        "../src/helpers.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/helpers.js"
+    },
+    {
+      "path": "test/index-handlers.test.js",
+      "kind": "js",
+      "lines": 131,
+      "bytes": 4086,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "os",
+        "../src/helpers.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/index.js compress_markdown tool. The compress_markdown handler is registered inline in src/index.js (not via a registerXxxTools export), so we test the two core helpers that implement its behavior: minifyTokens (compression) and readFile (file loading / error path)."
+    },
+    {
+      "path": "test/memory-handlers.test.js",
+      "kind": "js",
+      "lines": 185,
+      "bytes": 7155,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/memory.js",
+        "../src/config.js",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/memory.js tools Tests save_observation and search_observations via mock server."
+    },
+    {
+      "path": "test/memory.test.js",
+      "kind": "js",
+      "lines": 116,
+      "bytes": 4552,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/memory.js Tests: memory file I/O, observation format, search logic NOTE: The \"Observation search logic\" suite below reimplements the filter logic inline (Array.filter + toLowerCase + includes) instead of importing from src/memory.js. This is intentional — loadMemory() and normalizeMemory() are not exported and read from disk, making them impractical to unit test in isolation. These tests serve as documentation-level placeholders for the search algorithm's contract. The real integration coverage lives in test/memory-handlers.test.js, which exercises save_observation and search_observations through the MCP tool handlers end-to-end."
+    },
+    {
+      "path": "test/misc-handlers.test.js",
+      "kind": "js",
+      "lines": 216,
+      "bytes": 9650,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "../src/profiles.js",
+        "../src/roles.js",
+        "../src/task-runtime.js",
+        "../src/commands.js",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/profiles.js, src/roles.js, src/task-runtime.js, src/commands.js Uses the createMockServer pattern: register tools into a mock server, then invoke handlers directly and assert on the returned content."
+    },
+    {
+      "path": "test/profiles.test.js",
+      "kind": "js",
+      "lines": 48,
+      "bytes": 1597,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/profiles.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/profiles.js"
+    },
+    {
+      "path": "test/project-state-handlers.test.js",
+      "kind": "js",
+      "lines": 159,
+      "bytes": 7240,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "os"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/project-state.js MCP tools. Uses createMockServer pattern to invoke tool handlers directly. Uses a temp directory via --project-root to isolate state files."
+    },
+    {
+      "path": "test/project-state.test.js",
+      "kind": "js",
+      "lines": 122,
+      "bytes": 4146,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/project-state.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/project-state.js using the real implementation."
+    },
+    {
+      "path": "test/rate-limiter.test.js",
+      "kind": "js",
+      "lines": 62,
+      "bytes": 1749,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/rate-limiter.js Tests: rate limit check, window reset"
+    },
+    {
+      "path": "test/roles.test.js",
+      "kind": "js",
+      "lines": 52,
+      "bytes": 1794,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/roles.js",
+        "../src/profiles.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/rules-handlers.test.js",
+      "kind": "js",
+      "lines": 208,
+      "bytes": 9188,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/rules.js",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/rules.js MCP tools. Uses createMockServer pattern to invoke handlers directly against the real filesystem (ai-rules/ directory)."
+    },
+    {
+      "path": "test/safety-guards.test.js",
+      "kind": "js",
+      "lines": 220,
+      "bytes": 9074,
+      "imports": [
+        "node:test",
+        "node:assert"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/safety-guards.js Tests: checkRateLimit, trackOutput, isDuplicateOutput, filterExpiredSessions, trackToolCall, validateOutput"
+    },
+    {
+      "path": "test/skills-handlers.test.js",
+      "kind": "js",
+      "lines": 124,
+      "bytes": 4683,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/config.js",
+        "../src/skills.js",
+        "../src/rate-limiter.js"
+      ],
+      "exports": [],
+      "summary": "Handler-level tests for src/skills.js MCP tools. Tests: list_skills, get_skill via createMockServer pattern. Since the project may not have a .claude/skills directory, we create temporary skill fixtures before the suite and clean up after."
+    },
+    {
+      "path": "test/skills.test.js",
+      "kind": "js",
+      "lines": 118,
+      "bytes": 4652,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/helpers.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/skills.js Tests: skill file structure, frontmatter parsing logic"
+    },
+    {
+      "path": "test/state-compaction.test.js",
+      "kind": "js",
+      "lines": 94,
+      "bytes": 3374,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/state-compaction.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/task-runtime.test.js",
+      "kind": "js",
+      "lines": 55,
+      "bytes": 1855,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "../src/task-runtime.js"
+      ],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test/ttsr-learn-metrics.test.js",
+      "kind": "js",
+      "lines": 133,
+      "bytes": 5414,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/ttsr-manager.js",
+        "../src/learn-trigger.js"
+      ],
+      "exports": [],
+      "summary": "Test suite for src/ttsr-manager.js, src/learn-trigger.js Tests: TtsrManager, LearnTrigger"
+    },
+    {
+      "path": "test/validators-handlers.test.js",
+      "kind": "js",
+      "lines": 257,
+      "bytes": 8947,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "fs",
+        "path",
+        "os",
+        "../src/validators.js"
+      ],
+      "exports": [
+        "greet"
+      ],
+      "summary": "Handler-level tests for src/validators.js tools. Uses createMockServer pattern — invokes handlers directly via mock registration."
+    },
+    {
+      "path": "test/validators.test.js",
+      "kind": "js",
+      "lines": 206,
+      "bytes": 7342,
+      "imports": [
+        "node:test",
+        "node:assert",
+        "../src/config.js",
+        "../src/code-reading.js",
+        "../src/validators.js"
+      ],
+      "exports": [
+        "add"
+      ],
+      "summary": "Test suite for validator internals"
+    },
+    {
+      "path": "examples/ide-lean.prompt.md",
+      "kind": "md",
+      "lines": 19,
+      "bytes": 597,
+      "imports": [],
+      "exports": [],
+      "summary": "Stack Perfeita — Lean IDE Prompt"
+    },
+    {
+      "path": "examples/mcp.cursor.bundled-rules.json",
+      "kind": "json",
+      "lines": 9,
+      "bytes": 140,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "examples/mcp.cursor.json",
+      "kind": "json",
+      "lines": 9,
+      "bytes": 169,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "examples/opencode.lean.json",
+      "kind": "json",
+      "lines": 26,
+      "bytes": 554,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": ".cursorrules",
+      "kind": "text",
+      "lines": 37,
+      "bytes": 1666,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": ".windsurfrules",
+      "kind": "text",
+      "lines": 37,
+      "bytes": 1666,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "kind": "md",
+      "lines": 37,
+      "bytes": 1666,
+      "imports": [],
+      "exports": [],
+      "summary": "STACK PERFEITA MCP — LIVE IGNITION"
+    },
+    {
+      "path": "README.md",
+      "kind": "md",
+      "lines": 380,
+      "bytes": 17827,
+      "imports": [],
+      "exports": [],
+      "summary": "[Stack Perfeita MCP](https://github.com/GuilhermeFrediani/magnifiqe)"
+    },
+    {
+      "path": "PROMPTS.md",
+      "kind": "md",
+      "lines": 237,
+      "bytes": 6163,
+      "imports": [],
+      "exports": [],
+      "summary": "Prompts: Stack Perfeita MCP Live — VERSÃO CONDENSADA"
+    },
+    {
+      "path": "package.json",
+      "kind": "json",
+      "lines": 68,
+      "bytes": 1761,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "opencode.json",
+      "kind": "json",
+      "lines": 26,
+      "bytes": 630,
+      "imports": [],
+      "exports": [],
+      "summary": "No inline summary detected"
+    },
+    {
+      "path": "test-smoke-council.mjs",
+      "kind": "mjs",
+      "lines": 200,
+      "bytes": 8361,
+      "imports": [
+        "node:child_process",
+        "node:path"
+      ],
+      "exports": [],
+      "summary": "ignore non-json lines"
+    }
+  ]
+}

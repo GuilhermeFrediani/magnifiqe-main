@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://magnifiqe.dev/schemas/rule-frontmatter.json",
+  "title": "AI Rule Frontmatter",
+  "description": "Schema for AI rule markdown file frontmatter",
+  "type": "object",
+  "required": ["description"],
+  "properties": {
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Brief description of the rule"
+    },
+    "condition": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      ],
+      "description": "TTSR trigger condition for rule activation"
+    },
+    "astCondition": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      ],
+      "description": "AST-based condition for rule activation"
+    },
+    "scope": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      ],
+      "description": "Scope where rule applies (file patterns, project areas)"
+    },
+    "interruptMode": {
+      "type": "string",
+      "enum": ["never", "prose-only", "tool-only", "always"],
+      "description": "When/how the rule should interrupt agent flow"
+    },
+    "alwaysApply": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, rule applies to all interactions without condition checks"
+    },
+    "globs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "File glob patterns where rule is active"
+    }
+  },
+  "additionalProperties": false
+}

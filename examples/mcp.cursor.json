@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "stack-perfeita": {
+      "command": "npx",
+      "args": ["stack-perfeita-mcp", "--project-root", ".", "--rules-dir", "./ai-rules"]
+    }
+  }
+}

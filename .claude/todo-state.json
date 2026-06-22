@@ -1,0 +1,21 @@
+{
+  "phases": [
+    {
+      "name": "Phase 1",
+      "tasks": [
+        {
+          "text": "Task A",
+          "status": "done"
+        },
+        {
+          "text": "Task B",
+          "status": "dropped"
+        },
+        {
+          "text": "Task C",
+          "status": "in-progress"
+        }
+      ]
+    }
+  ]
+}

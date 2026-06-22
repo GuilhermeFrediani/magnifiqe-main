@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://magnifiqe.dev/schemas/failure-classification.json",
+  "title": "Failure Classification",
+  "description": "Schema for structured failure classification output",
+  "type": "object",
+  "required": ["failure_class", "evidence", "strongest_signal", "likely_cause", "next_command", "ruled_out", "safe_to_continue"],
+  "properties": {
+    "failure_class": {
+      "type": "string",
+      "enum": [
+        "dependency",
+        "validation",
+        "compression",
+        "memory",
+        "state",
+        "tool",
+        "hallucination",
+        "network",
+        "config",
+        "unknown"
+      ],
+      "description": "Category of failure"
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Observable evidence supporting classification"
+    },
+    "strongest_signal": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Most diagnostic piece of evidence"
+    },
+    "likely_cause": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Probable root cause explanation"
+    },
+    "next_command": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Recommended next action/command to diagnose or fix"
+    },
+    "ruled_out": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Failure classes that were considered but ruled out"
+    },
+    "safe_to_continue": {
+      "type": "boolean",
+      "description": "Whether it is safe to continue with the current approach"
+    }
+  },
+  "additionalProperties": false
+}

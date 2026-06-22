@@ -1,0 +1,26 @@
+{
+  "current_contract": {
+    "objective": "Refactor auth module",
+    "inputs": "Existing codebase + auth docs",
+    "outputs": "Clean auth module with tests",
+    "non_goals": "Rewrite the database layer",
+    "acceptance_criteria": "All tests pass, coverage > 80%",
+    "risks": "Breaking existing login flow",
+    "minimum_evidence": "Test suite green + manual login test",
+    "created_at": "2026-06-22T01:54:01.828Z"
+  },
+  "contracts_history": [
+    {
+      "objective": "Refactor auth module",
+      "inputs": "Existing codebase + auth docs",
+      "outputs": "Clean auth module with tests",
+      "non_goals": "Rewrite the database layer",
+      "acceptance_criteria": "All tests pass, coverage > 80%",
+      "risks": "Breaking existing login flow",
+      "minimum_evidence": "Test suite green + manual login test",
+      "created_at": "2026-06-22T01:54:01.828Z"
+    }
+  ],
+  "evidence_log": [],
+  "updated_at": "2026-06-22T01:54:01.828Z"
+}

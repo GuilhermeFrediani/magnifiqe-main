@@ -1,0 +1,156 @@
+# AI Docs Index
+
+## Recommended reading order
+1. `README.md`
+2. `ai-docs/compact-index.md`
+3. `ai-docs/bundle-index.md`
+4. `ai-rules/12-council-deliberation.md`
+5. `ai-rules/13-live-council-runtime.md`
+6. open only the needed files in `ai-docs/bundles/` or `ai-docs/mirror/...`
+
+## Largest files to treat carefully
+- `src/dependency-resolution.js` — 712 lines
+- `src/code-reading.js` — 683 lines
+- `src/council-orchestrator.js` — 443 lines
+- `src/council-session.js` — 430 lines
+- `test/code-reading-handlers.test.js` — 393 lines
+- `README.md` — 380 lines
+- `src/activation.js` — 378 lines
+- `src/project-state.js` — 352 lines
+- `src/council-prompts.js` — 341 lines
+- `src/council.js` — 328 lines
+
+## Repository groups
+### .github
+- `.github/copilot-instructions.md` — STACK PERFEITA MCP — LIVE IGNITION
+
+### (root)
+- `.cursorrules` — No inline summary detected
+- `.windsurfrules` — No inline summary detected
+- `README.md` — [Stack Perfeita MCP](https://github.com/GuilhermeFrediani/magnifiqe)
+- `PROMPTS.md` — Prompts: Stack Perfeita MCP Live — VERSÃO CONDENSADA
+- `package.json` — No inline summary detected
+- `opencode.json` — No inline summary detected
+- `test-smoke-council.mjs` — ignore non-json lines
+
+### ai-rules
+- `ai-rules/00-project-overview.md` — 00 - Project Overview & Stack Manifest (The Domain Map)
+- `ai-rules/01-ai-workflow-strict.md` — AIPIHKAL Protocol: Strict Workflow for Real Tasks
+- `ai-rules/02-coding-standards.md` — 02 - Coding Standards (O Estilo Caveman)
+- `ai-rules/03-token-economy.md` — 03 - Token Economy & Context Management (2026)
+- `ai-rules/04-security-secrets.md` — 04 - Segurança Moderna e OWASP (2025/2026)
+- `ai-rules/05-debugging-mastery.md` — 05 - Debugging Mastery (Anti-Guesswork for JS/TS)
+- `ai-rules/06-ci-cd-testing.md` — 06 - CI/CD Moderno: Pipeline como Produto (2026)
+- `ai-rules/07-frontend-semantic.md` — 07 - Frontend Semântico e Acessibilidade (2026)
+- `ai-rules/08-backend-architecture.md` — 08 - Arquitetura de Produção e Backend Semântico (2026)
+- `ai-rules/09-bad-patterns-halt.md` — 09 - Fundações Podres e Padrões Ruins (Halt no Bad Code)
+- `ai-rules/10-llm-behavioral-rules.md` — 10 - Universal Behavioral Rules for LLMs
+- `ai-rules/11-systematic-debugging.md` — 11 - Systematic Debugging (O Método de 4 Fases)
+- `ai-rules/12-council-deliberation.md` — Council Deliberation Protocol
+- `ai-rules/13-live-council-runtime.md` — Live Council Runtime
+- `ai-rules/14-modular-frontend.md` — 14 - Arquitetura Modular FrontEnd (CSS e HTML Organizados)
+- `ai-rules/15-modular-backend.md` — 15 - Arquitetura Modular BackEnd (Serviços Organizados e Escaláveis)
+- `ai-rules/16-debug-discipline.md` — 16 - Disciplina de Debug (Encontre o Problema Antes de Consertar)
+- `ai-rules/17-anti-complexity.md` — 17 - Anti-Complexidade (Código Limpo Não Tem Peso)
+- `ai-rules/commands/code-analysis.md` — Code Analysis Command
+
+### bin
+- `bin/setup-ide.js` — stack-perfeita setup script Generates IDE configuration files and can bootstrap starter rules/skills. Usage: stack-perfeita                 # Generate IDE config files only stack-perfeita init            # Generate configs + starter ai-rules + starter skills stack-perfeita --bootstrap     # Same as init stack-perfeita --minimal       # Only .cursorrules stack-perfeita --lean          # Generate lean prompt/config for lower token usage stack-perfeita --force         # Overwrite existing files
+
+### examples
+- `examples/ide-lean.prompt.md` — Stack Perfeita — Lean IDE Prompt
+- `examples/mcp.cursor.bundled-rules.json` — No inline summary detected
+- `examples/mcp.cursor.json` — No inline summary detected
+- `examples/opencode.lean.json` — No inline summary detected
+
+### src
+- `src/activation.js` — Stack Perfeita MCP — Project Activation activate_project MCP tool registration. Builds a complete project manifest: stack, rules, skills, state, fingerprint.
+- `src/anti-hallucination.js` — Stack Perfeita MCP — Anti-Hallucination orchestrator Thin delegation layer that registers all anti-hallucination tools by delegating to focused sub-modules: - verification.js: file/symbol verification, hallucination detection, groundedness scoring, incremental diff tracking - watchdog.js: output dedup tracking, session watchdog timing, test execution monitoring, session health diagnostics - caveman.js: output budget enforcement, caveman mode validation, auto-validation chain
+- `src/caveman.js` — Stack Perfeita MCP — Caveman tools Output budget enforcement, caveman mode validation, and auto-validation chain.
+- `src/code-reading.js` — Stack Perfeita MCP — Code Reading tools smart_outline, smart_unfold, smart_read MCP tool registrations. Babel parser first, acorn-loose fallback, regex last.
+- `src/commands.js` — Stack Perfeita MCP — Command tool run_command MCP tool registration.
+- `src/compaction.js` — Stack Perfeita MCP — Compaction tools compact_conversation_state, compact_logs, compact_diff, promote_summary_to_checkpoint Semantic compaction for long sessions: preserve meaning, discard noise.
+- `src/compression-orchestrator.js` — Stack Perfeita MCP — Compression Orchestrator Wires the CCR pipeline (content-detector → cache-aligner → ccr-hierarchy → store) into a simple compress/decompress API for tool outputs. Flow: 1. CacheAligner detects volatile content (UUIDs, timestamps, JWTs) 2. ContentDetector determines content type 3. CCR hierarchy applies appropriate compression level 4. CompressionStore saves originals with sentinel markers 5. CircuitBreaker skips compression on repeated failures
+- `src/compression/cache-aligner.js` — Stack Perfeita MCP — CacheAligner (Detector-Only) Detects volatile content (UUIDs, timestamps, JWTs, hex hashes) in text. Does NOT mutate — emits warnings and tracks prefix stability. Port of Headroom's cache_aligner.py pattern.
+- `src/compression/ccr-hierarchy.js` — Stack Perfeita MCP — CCR Hierarchy (Compression-Compression-Restore) Unified 4-level compression pipeline: Level 1 (Lossless): strip HTML comments, collapse whitespace Level 2 (Structural): clip head/tail, preserve structure markers Level 3 (Semantic): extract key points, drop redundancy Level 4 (Aggressive): drop entire sections by priority Combines Headroom's content routing with Magnifiqe's existing minifyTokens/clipText.
+- `src/compression/circuit-breaker.js` — Stack Perfeita MCP — Circuit Breaker After N consecutive pipeline failures, pass through without compression. Port of Headroom's pipeline.py circuit breaker pattern.
+- `src/compression/content-detector.js` — Stack Perfeita MCP — Content Type Detector Detects content type of tool output for routing to appropriate compressor. Port of Headroom's content_detector.py pattern.
+- `src/compression/store.js` — Stack Perfeita MCP — CCR Reversible Compression Store Stores original content with hash key, emits sentinel markers in compressed output. LLM can retrieve originals on demand via magnifiqe_retrieve(hash). Port of Headroom's compression_store.py + smart_crusher.py sentinel pattern.
+- `src/compression/thresholds.js` — Stack Perfeita MCP — Compression Thresholds Evidence-based thresholds from Headroom benchmarks: - 19-32% compression → 97% accuracy (SQuAD v2 / BFCL) - 90%+ compression → viable for code search, SRE debugging - Code search: 17,765 → 1,408 tokens (92% reduction) - SRE debugging: 65,694 → 5,118 tokens (92% reduction)
+- `src/config.js` — Stack Perfeita MCP — Configuration All constants, topic maps, rule descriptions, response-style rules, and bad-code patterns.
+- `src/council-gate.js` — Council Gate — scoring heuristic and formatting for council_need evaluation. Decides whether a task warrants full council deliberation.
+- `src/council-json.js` — @module council-json JSON parsing, normalization, and repair utilities for Council Live.
+- `src/council-orchestrator.js` — @module council-orchestrator Session management, plan building, and tool registration for Council Live.
+- `src/council-prompts.js` — @module council-prompts Prompt building, constants, Zod schemas, and schema examples for Council Live.
+- `src/council-session.js` — Council Session — constants, bot briefs, session CRUD, position/review upsert, and formatting. Core data layer for council deliberation workflow.
+- `src/council-synthesis.js` — Council Synthesis — deterministic synthesis of council positions and peer reviews. Produces consensus, disagreements, discarded ideas, risk ranking, and recommended next step.
+- `src/council.js` — Council Orchestrator — thin coordination layer that wires council modules to MCP tool registration. All business logic lives in: - council-gate.js      (gate scoring) - council-session.js   (session CRUD, constants, utilities) - council-synthesis.js (deterministic synthesis)
+- `src/dependency-resolution.js` — Stack Perfeita MCP — Dependency resolution helpers Monorepo/workspace-aware import and asset validation.
+- `src/helpers.js` — Stack Perfeita MCP — Helper utilities File reading, path safety, token minification, rule file listing.
+- `src/index.js` — stack-perfeita-mcp v4.8.0 MCP server that exposes project AI rules as tools for any IDE/agent. Architecture: Modular — each tool category lives in its own file under src/. This file is the entry point: it wires everything together and starts the server. Registered modules: Core:       resources, rules, validators, skills, code-reading, commands, memory, project-state, compaction, profiles, roles, task-runtime, activation, council, council-live, anti-hallucination New:        compression-orchestrator (CCR pipeline), ttsr-manager (TTSR rules), learn-trigger (headroom_learn periodic cycle) Inline:     compress_markdown (CCR-enhanced) Usage: node src/index.js --rules-dir /path/to/ai-rules
+- `src/interceptors/base.js` — Stack Perfeita MCP — Tool Result Interceptor Protocol Defines the interface for compressing specific tool outputs before general compression. Port of Headroom's ToolResultInterceptor pattern.
+- `src/learn-trigger.js` — Stack Perfeita MCP — Learn Trigger Periodic and on-demand triggers for the headroom_learn cycle. Scans .claude/ sessions, analyzes patterns, writes recommendations.
+- `src/learn/analyzer.js` — Stack Perfeita MCP — Session Analyzer (headroom_learn pattern) Analyzes session data to learn from failures and improve rules. Offline learning loop: collect → digest → analyze → recommend. Port of Headroom's analyzer.py pattern.
+- `src/learn/scanner.js` — Stack Perfeita MCP — Session Scanner Discovers and parses session data from .claude/ directory. Port of Headroom's scanner.py pattern.
+- `src/learn/writer.js` — Stack Perfeita MCP — Recommendation Writer Writes learned corrections to memory/state files. Port of Headroom's writer.py pattern.
+- `src/memory.js` — Stack Perfeita MCP — Memory tools save_observation, search_observations. Uses JSON file persistence with simple dedupe + trimming.
+- `src/observability/logger.js` — Stack Perfeita MCP — Structured Logger Replaces ad-hoc stderr writes with structured logging. All output goes to stderr (stdout reserved for JSON-RPC).
+- `src/observability/metrics.js` — Stack Perfeita MCP — Metrics (OpenTelemetry-inspired) Counters, histograms, and gauges for compression, council, and tool performance. Port of Headroom's headroom_otel_metrics.py pattern.
+- `src/phase1-tools.js` — @module phase1-tools Phase 1 tool registrations: Semantic Compression + Prompt Standards.
+- `src/profiles.js` — Stack Perfeita MCP — Model Profiles get_model_profile MCP tool registration. Adapts behavior by provider family and operational capability profile.
+- `src/project-state.js` — Stack Perfeita MCP — Project State tools get_project_state, save_project_state, checkpoint_task, list_checkpoints, resume_task
+- `src/prompt-standards.js` — @module prompt-standards RFC 2119 prompt conventions and density rules. Based on the OMP System Prompts pattern: Dense, imperative, RFC-keyed. Tags carry semantics.
+- `src/prompts/council-deliberation.md` — Markdown document
+- `src/rate-limiter.js` — Stack Perfeita MCP — Rate Limiter Prevents tool call loops by enforcing a max-calls-per-window policy. Includes a global rate limit across all tools.
+- `src/resources.js` — Stack Perfeita MCP — MCP Resource registrations Exposes ai-rules/*.md as MCP resources for discovery and reading.
+- `src/roles.js` — Stack Perfeita MCP — Role activation activate_role MCP tool registration. Applies role-specific scaffolding adapted by model capability profile.
+- `src/rules.js` — Stack Perfeita MCP — Rules tools list_rules, get_rules, get_context MCP tool registrations.
+- `src/safety-guards.js` — Stack Perfeita MCP — Safety Guards Enhanced rate limiting, output dedup, session TTL, and anti-loop protections. Addresses gaps identified in the PLANO.txt audit: - Rate limiter: adds global limit (not just per-tool) - Output dedup: SHA-256 hash ring for detecting repeated LLM outputs - Session TTL: auto-expire old council sessions - Loop detection: pattern-based detection of repeated tool calls
+- `src/semantic-compression.js` — @module semantic-compression LLM-aware semantic compression with three deletion tiers. Based on the OMP Semantic Compression pattern: LLMs reconstruct grammar from content words — remove predictable glue, keep semantic payload. Prefer fragments over sentences.
+- `src/skills.js` — Stack Perfeita MCP — Skills tools list_skills and get_skill MCP tool registrations.
+- `src/state-compaction.js` — Stack Perfeita MCP — Automatic project state compaction Predictable trimming when state grows beyond configured thresholds.
+- `src/task-runtime.js` — Stack Perfeita MCP — Task runtime start_task_contract and assert_step_evidence MCP tool registrations.
+- `src/ttsr-manager.js` — Stack Perfeita MCP — TTSR Manager Bridges the TTSR engine into the MCP server as managed tools. Exposes ttsr_check_output and ttsr_stats for runtime rule monitoring.
+- `src/ttsr/halt-bridge.js` — Stack Perfeita MCP — TTSR-HALT Integration Bridge Connects TTSR engine with existing HALT patterns from config.js BAD_PATTERNS. Converts BAD_PATTERNS regex entries into TTSR rules for lazy-loaded monitoring.
+- `src/ttsr/interrupt-template.md` — Markdown document
+- `src/ttsr/rule-types.js` — Stack Perfeita MCP — TTSR Rule Types + Bucket Routing Defines rule schema and routing logic (TTSR vs rulebook vs always-apply). Port of OMP's rule.ts + rule-buckets.ts pattern.
+- `src/ttsr/settings.js` — Stack Perfeita MCP — TTSR Settings Configuration schema for TTSR behavior. Port of OMP's TtsrSettings pattern.
+- `src/ttsr/ttsr-engine.js` — Stack Perfeita MCP — TTSR Engine (Time-Traveling Streamed Rules) Monitors LLM output against registered regex/AST conditions. When a rule fires: abort → inject corrective reminder → retry. Port of OMP's TtsrManager pattern adapted for MCP server context.
+- `src/validators.js` — Stack Perfeita MCP — Validator tools validate_bad_code, validate_response_style, validate_git_commit, dependency_validate.
+- `src/verification.js` — Stack Perfeita MCP — Verification tools File/symbol verification, hallucination detection, groundedness scoring, and incremental diff tracking.
+- `src/watchdog.js` — Stack Perfeita MCP — Watchdog tools Output dedup tracking, session watchdog timing, test execution monitoring, and session health diagnostics.
+
+### test
+- `test/activation.test.js` — Test suite for src/activation.js Tests: tool registration, activate_project manifest, doctor_runtime_setup diagnostics, get_prompt_script sections, generateFingerprint consistency
+- `test/code-reading-handlers.test.js` — Handler-level tests for src/code-reading.js MCP tools. Exercises smart_outline, smart_unfold, smart_read via mock server.
+- `test/code-reading-phase2.test.js` — No inline summary detected
+- `test/code-reading.test.js` — Test suite for src/code-reading.js Tests: extractSymbols, getFileLang
+- `test/compaction-handlers.test.js` — Handler-level tests for src/compaction.js MCP tools. Uses createMockServer pattern to invoke handlers directly.
+- `test/compaction.test.js` — Test suite for src/compaction.js Tests: extractErrorsFromLogs, summarizeDiff
+- `test/compression-orchestrator.test.js` — Test suite for src/compression-orchestrator.js Tests: compressToolOutput, decompressOutput, getCompressionStats
+- `test/config.test.js` — Test suite for src/config.js Tests: TOPIC_MAP coverage, RULE_DESCRIPTIONS keys, BAD_PATTERNS structure
+- `test/council-handlers.test.js` — Either lists sessions or shows empty message
+- `test/council-live-handlers.test.js` — No inline summary detected
+- `test/council-live.test.js` — No inline summary detected
+- `test/council.test.js` — No inline summary detected
+- `test/dependency-resolution.test.js` — No inline summary detected
+- `test/e2e-stdio.test.js` — No inline summary detected
+- `test/helpers.test.js` — Test suite for src/helpers.js
+- `test/index-handlers.test.js` — Handler-level tests for src/index.js compress_markdown tool. The compress_markdown handler is registered inline in src/index.js (not via a registerXxxTools export), so we test the two core helpers that implement its behavior: minifyTokens (compression) and readFile (file loading / error path).
+- `test/memory-handlers.test.js` — Handler-level tests for src/memory.js tools Tests save_observation and search_observations via mock server.
+- `test/memory.test.js` — Test suite for src/memory.js Tests: memory file I/O, observation format, search logic NOTE: The "Observation search logic" suite below reimplements the filter logic inline (Array.filter + toLowerCase + includes) instead of importing from src/memory.js. This is intentional — loadMemory() and normalizeMemory() are not exported and read from disk, making them impractical to unit test in isolation. These tests serve as documentation-level placeholders for the search algorithm's contract. The real integration coverage lives in test/memory-handlers.test.js, which exercises save_observation and search_observations through the MCP tool handlers end-to-end.
+- `test/misc-handlers.test.js` — Handler-level tests for src/profiles.js, src/roles.js, src/task-runtime.js, src/commands.js Uses the createMockServer pattern: register tools into a mock server, then invoke handlers directly and assert on the returned content.
+- `test/profiles.test.js` — Test suite for src/profiles.js
+- `test/project-state-handlers.test.js` — Handler-level tests for src/project-state.js MCP tools. Uses createMockServer pattern to invoke tool handlers directly. Uses a temp directory via --project-root to isolate state files.
+- `test/project-state.test.js` — Test suite for src/project-state.js using the real implementation.
+- `test/rate-limiter.test.js` — Test suite for src/rate-limiter.js Tests: rate limit check, window reset
+- `test/roles.test.js` — No inline summary detected
+- `test/rules-handlers.test.js` — Handler-level tests for src/rules.js MCP tools. Uses createMockServer pattern to invoke handlers directly against the real filesystem (ai-rules/ directory).
+- `test/safety-guards.test.js` — Test suite for src/safety-guards.js Tests: checkRateLimit, trackOutput, isDuplicateOutput, filterExpiredSessions, trackToolCall, validateOutput
+- `test/skills-handlers.test.js` — Handler-level tests for src/skills.js MCP tools. Tests: list_skills, get_skill via createMockServer pattern. Since the project may not have a .claude/skills directory, we create temporary skill fixtures before the suite and clean up after.
+- `test/skills.test.js` — Test suite for src/skills.js Tests: skill file structure, frontmatter parsing logic
+- `test/state-compaction.test.js` — No inline summary detected
+- `test/task-runtime.test.js` — No inline summary detected
+- `test/ttsr-learn-metrics.test.js` — Test suite for src/ttsr-manager.js, src/learn-trigger.js Tests: TtsrManager, LearnTrigger
+- `test/validators-handlers.test.js` — Handler-level tests for src/validators.js tools. Uses createMockServer pattern — invokes handlers directly via mock registration.
+- `test/validators.test.js` — Test suite for validator internals
