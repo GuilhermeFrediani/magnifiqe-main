@@ -90,9 +90,17 @@ import { metrics } from "./observability/metrics.js";
 // Safety
 import { checkRateLimit } from "./safety-guards.js";
 
-// ─── MCP Protocol Protection ───────────────────────────────────────────────
-// stdout is reserved for JSON-RPC. Any console.log breaks the protocol.
-// eslint-disable-next-line no-console
+// Karpathy Anti-Slop Hooks
+import { withKarpathyValidation, validateSessionKarpathy, getKarpathyState } from "./karpathy-hooks.js";
+
+// Karpathy Testing
+import { registerKarpathyTestingTools } from "./karpathy-testing.js";
+
+// Karpathy Dashboard
+import { registerKarpathyDashboardTools } from "./karpathy-dashboard.js";
+
+// Karpathy Impact
+import { registerKarpathyImpactTools } from "./karpathy-impact.js";
 console.log = (...args) => process.stderr.write(args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
 
 // ─── Server ────────────────────────────────────────────────────────────────
@@ -135,8 +143,10 @@ registerCICDValidator(server);
 registerTriageTools(server);
 registerReviewPRTools(server);
 
-// Phase 1: Gap fixes (anti-delirium, model prompts, weak LLM, output format)
-registerAntiDeliriumTools(server);
+// Karpathy Anti-Slop
+registerKarpathyTestingTools(server);
+registerKarpathyDashboardTools(server);
+registerKarpathyImpactTools(server);
 registerPromptAdapterTools(server);
 registerLLMScaffolderTools(server);
 registerOutputEnforcerTools(server);
@@ -219,6 +229,14 @@ logger.info("server_started", {
 // ─── Start headroom_learn periodic trigger ─────────────────────────────────
 learnTrigger.start();
 logger.info("learn_trigger_started", { intervalMs: 300_000 });
+
+// ─── Karpathy Session Validation ──────────────────────────────────────────
+const karpathyValidation = validateSessionKarpathy();
+if (!karpathyValidation.valid) {
+  logger.warn("karpathy_guidelines_partial", { missing: karpathyValidation.missing });
+} else {
+  logger.info("karpathy_guidelines_loaded", { status: "active" });
+}
 
 // ─── Orphan Detection ──────────────────────────────────────────────────────
 // Auto-exit when parent process dies (stdin closed / ppid changed)

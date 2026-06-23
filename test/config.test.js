@@ -85,6 +85,12 @@ describe('RULE_DESCRIPTIONS', () => {
       '09-bad-patterns-halt.md',
       '10-llm-behavioral-rules.md',
       '11-systematic-debugging.md',
+      '14-modular-frontend.md',
+      '15-modular-backend.md',
+      '16-debug-discipline.md',
+      '17-anti-complexity.md',
+      '18-karpathy-guidelines.md',
+      '19-fullstack-architecture.md',
     ];
     for (const file of expectedFiles) {
       assert.ok(RULE_DESCRIPTIONS[file], `Missing description for: ${file}`);

@@ -71,7 +71,6 @@ const TOPIC_MAP = {
   "semantic":     "07-frontend-semantic.md",
   "a11y":         "07-frontend-semantic.md",
   "backend":      "08-backend-architecture.md",
-  "architecture": "08-backend-architecture.md",
   "arch":         "08-backend-architecture.md",
   "bad":          "09-bad-patterns-halt.md",
   "patterns":     "09-bad-patterns-halt.md",
@@ -98,6 +97,16 @@ const TOPIC_MAP = {
   "minimal":          "17-anti-complexity.md",
   "code-size":        "17-anti-complexity.md",
   "refactor":         "17-anti-complexity.md",
+  "karpathy":         "18-karpathy-guidelines.md",
+  "anti-slop":        "18-karpathy-guidelines.md",
+  "simplicity":       "18-karpathy-guidelines.md",
+  "surgical":         "18-karpathy-guidelines.md",
+  "goal-driven":      "18-karpathy-guidelines.md",
+  "fullstack":        "19-fullstack-architecture.md",
+  "modular":          "19-fullstack-architecture.md",
+  "architecture":     "19-fullstack-architecture.md",
+  "separation":       "19-fullstack-architecture.md",
+  "layers":           "19-fullstack-architecture.md",
 };
 
 const RULE_DESCRIPTIONS = {
@@ -113,10 +122,12 @@ const RULE_DESCRIPTIONS = {
   "09-bad-patterns-halt.md":        "Bad code blacklist — halt on rotten foundation",
   "10-llm-behavioral-rules.md":     "Universal LLM rules — excitation blocking, global behavior",
   "11-systematic-debugging.md":     "4-phase systematic debugging — root cause, hypothesis, fix, verify",
-  "14-modular-frontend.md":    "Modular CSS architecture — entry point, design tokens, isolated components",
-  "15-modular-backend.md":     "Modular backend services — controllers, services, repositories, utils layers",
-  "16-debug-discipline.md":    "Debug discipline — reproduce, isolate, understand, fix, validate",
-  "17-anti-complexity.md":     "Anti-complexity — minimal files, small functions, zero dead code",
+  "14-modular-frontend.md":         "Modular CSS architecture — entry point, design tokens, isolated components",
+  "15-modular-backend.md":          "Modular backend services — controllers, services, repositories, utils layers",
+  "16-debug-discipline.md":         "Debug discipline — reproduce, isolate, understand, fix, validate",
+  "17-anti-complexity.md":          "Anti-complexity — minimal files, small functions, zero dead code",
+  "18-karpathy-guidelines.md":      "Karpathy anti-slop — think before coding, simplicity, surgical changes, goal-driven",
+  "19-fullstack-architecture.md":   "Fullstack modular architecture — separation of concerns, layers, mandatory structure",
 };
 
 const BAD_PATTERNS = [

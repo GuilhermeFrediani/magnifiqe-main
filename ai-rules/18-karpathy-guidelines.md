@@ -1,20 +1,22 @@
-# Cursor Rules — Stack Perfeita MCP
+# 18 - Karpathy Guidelines (Anti-Slop Behavioral Rules)
 
-> **ATIVAÇÃO AUTOMÁTICA:** Este arquivo é lido pelo Cursor automaticamente.
-> Mantenha-o na raiz do projeto para garantir conformidade.
+> **META:** Derived from Andrej Karpathy's observations on LLM coding pitfalls. These 4 pillars reduce hallucinations, overcomplication, and unnecessary changes. Complementary to Rule 10 (Behavioral Rules) and Rule 17 (Anti-Complexity).
 
-## Karpathy Anti-Slop Guidelines (OBRIGATÓRIO)
-
-### 1. Think Before Coding
+## 1. Think Before Coding
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ASK.
+- State assumptions explicitly. If uncertain, ASK.
 - If multiple interpretations exist, present them — don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, STOP. Name what's confusing. Ask.
 
-### 2. Simplicity First
+```markdown
+✅ CORRECT: "Before implementing, I need to clarify: 1. Scope... 2. Format... 3. Fields..."
+❌ WRONG: [immediately writes 200 lines of code with wrong assumptions]
+```
+
+## 2. Simplicity First
 **Minimum code that solves the problem. Nothing speculative.**
 
 - No features beyond what was asked.
@@ -25,7 +27,12 @@ Before implementing:
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-### 3. Surgical Changes
+```markdown
+✅ CORRECT: def calculate_discount(amount, percent): return amount * (percent / 100)
+❌ WRONG: [Strategy pattern + Factory + Config class for a simple calculation]
+```
+
+## 3. Surgical Changes
 **Touch only what you must. Clean up only your own mess.**
 
 When editing existing code:
@@ -40,7 +47,12 @@ When your changes create orphans:
 
 The test: Every changed line should trace directly to the user's request.
 
-### 4. Goal-Driven Execution
+```markdown
+✅ CORRECT: Only modify the specific function requested
+❌ WRONG: "While I was here, I also refactored these 5 other functions..."
+```
+
+## 4. Goal-Driven Execution
 **Define success criteria. Loop until verified.**
 
 Transform tasks into verifiable goals:
@@ -55,27 +67,16 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
----
-
-## Stack Perfeita MCP Integration
-
-### Activation
-At session start:
-1. Call `activate_project()` to load project context
-2. Call `get_rules_bundle("karpathy")` to load behavioral guidelines
-
-### Output Validation
-Before claiming success:
-- Run `validate_bad_code` for code blocks
-- Run `validate_response_style` before long prose
-- Record proof with `assert_step_evidence(...)`
-
-### Behavioral Rules
-- Adaptive terseness by default
-- Zero excitation tokens
-- Rule of 2: same failure twice → HALT
-- Never declare success without proof
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
 ---
 
-**These guidelines are working if:** fewer unnecessary changes, fewer rewrites, clarifying questions before implementation.
+## Integration with Magnifiqe MCP
+
+These guidelines are automatically enforced via:
+- **Tool validation:** `validate_bad_code` checks for overcomplication patterns
+- **Output enforcement:** `enforce_output_format` validates surgical changes
+- **Anti-delirium:** `verify_claims` ensures assumptions are stated
+- **Watchdog:** `session_health` monitors goal-driven execution
+
+**Activation:** These rules are loaded automatically when `activate_project` is called at session start.

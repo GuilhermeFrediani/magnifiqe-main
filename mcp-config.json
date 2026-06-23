@@ -1,0 +1,41 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-server-config.json",
+  "name": "stack-perfeita-mcp",
+  "version": "4.8.0",
+  "description": "MCP server for code discipline: validation, checkpoints, context control, compression, security scanning, and Karpathy anti-slop guidelines.",
+  "mcpServers": {
+    "stack-perfeita": {
+      "command": "node",
+      "args": ["src/index.js", "--project-root", "."],
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "description": "Stack Perfeita MCP — automatic activation on session start"
+    }
+  },
+  "autoActivation": {
+    "enabled": true,
+    "tools": [
+      "activate_project",
+      "doctor_runtime_setup",
+      "get_rules_bundle"
+    ],
+    "description": "These tools are called automatically at session start"
+  },
+  "karpathyGuidelines": {
+    "enabled": true,
+    "rules": [
+      "18-karpathy-guidelines.md",
+      "19-fullstack-architecture.md"
+    ],
+    "autoLoad": true,
+    "description": "Karpathy anti-slop and modular architecture rules loaded automatically"
+  },
+  "hooks": {
+    "preToolCall": {
+      "enabled": true,
+      "validation": "karpathy-hooks",
+      "description": "Validates Karpathy guidelines before each tool call"
+    }
+  }
+}

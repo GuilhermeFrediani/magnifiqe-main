@@ -1,9 +1,11 @@
-# Cursor Rules — Stack Perfeita MCP
+# CLAUDE.md — Stack Perfeita MCP
 
-> **ATIVAÇÃO AUTOMÁTICA:** Este arquivo é lido pelo Cursor automaticamente.
-> Mantenha-o na raiz do projeto para garantir conformidade.
+> **ATIVAÇÃO AUTOMÁTICA:** Este arquivo é lido automaticamente por todas as IDEs e CLIs modernas.
+> Não remova este arquivo. Ele garante comportamento consistente em qualquer ferramenta.
 
 ## Karpathy Anti-Slop Guidelines (OBRIGATÓRIO)
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
 ### 1. Think Before Coding
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
@@ -55,27 +57,32 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
 ---
 
-## Stack Perfeita MCP Integration
+## Stack Perfeita MCP Rules
 
-### Activation
-At session start:
+### Activation Protocol
+At session start, ALWAYS:
 1. Call `activate_project()` to load project context
-2. Call `get_rules_bundle("karpathy")` to load behavioral guidelines
+2. Call `doctor_runtime_setup()` to verify environment
+3. Call `get_rules_bundle("karpathy")` to load behavioral guidelines
+4. Call `start_task_contract(...)` to define success criteria
 
 ### Output Validation
-Before claiming success:
+Before shipping code or claiming success:
 - Run `validate_bad_code` for code blocks
-- Run `validate_response_style` before long prose
+- Run `dependency_validate` when new imports/assets were introduced
+- Run `validate_response_style` before long explanatory prose
 - Record proof with `assert_step_evidence(...)`
 
 ### Behavioral Rules
-- Adaptive terseness by default
-- Zero excitation tokens
-- Rule of 2: same failure twice → HALT
+- Default mode: Adaptive terseness
+- Zero excitation tokens: no filler, no warm-up, no process narration
+- Rule of 2: same failure twice → HALT and report root cause
 - Never declare success without proof
 
 ---
 
-**These guidelines are working if:** fewer unnecessary changes, fewer rewrites, clarifying questions before implementation.
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
