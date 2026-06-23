@@ -9,7 +9,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { validateAbsolutePath, safeResolvePath } from '../src/helpers.js';
+import { validateAbsolutePath } from '../src/helpers.js';
 import { withRateLimit, rateLimiter } from '../src/rate-limiter.js';
 
 // ─── CRITICAL-1: validateAbsolutePath path traversal bypass ───────────────

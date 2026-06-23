@@ -81,7 +81,7 @@ describe('Session Memory Tools', () => {
     it('should handle optional fields with defaults', async () => {
       const handler = server.getHandler('save_session_state');
       
-      const result = await handler({
+      await handler({
         goal: 'Test goal',
         current_subtask: 'Test subtask',
         status: 'paused',
@@ -276,7 +276,7 @@ describe('Session Memory Tools', () => {
     it('should handle empty arrays', async () => {
       const saveHandler = server.getHandler('save_session_state');
       
-      const result = await saveHandler({
+      await saveHandler({
         goal: 'Test',
         current_subtask: 'Test',
         status: 'active',

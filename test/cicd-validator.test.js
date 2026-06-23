@@ -76,18 +76,6 @@ jobs:
       - run: echo "PR title: \${{ github.event.pull_request.title }}"
 `;
 
-const GITHUB_ACTIONS_TOKEN_EXPOSURE = `
-name: CI
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Token: $GITHUB_TOKEN"
-        env:
-          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-`;
-
 const GITLAB_CI_PLAIN_SECRETS = `
 stages:
   - build

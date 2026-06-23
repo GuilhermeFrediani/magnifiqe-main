@@ -10,7 +10,7 @@
  */
 
 import { z } from "zod";
-import { rateLimiter, withRateLimit } from "./rate-limiter.js";
+import { withRateLimit } from "./rate-limiter.js";
 
 // ─── Evaluation Criteria ─────────────────────────────────────────────────────
 
@@ -418,7 +418,6 @@ function handleOptimizePrompt({ prompt, target_score, focus }) {
 
     // Identify weaknesses
     const weaknesses = [];
-    const improvements = [];
 
     const categories = focusArea === "all"
       ? ["clarity", "specificity", "completeness", "edge_cases"]
@@ -446,32 +445,32 @@ function handleOptimizePrompt({ prompt, target_score, focus }) {
     // Generate improvements based on weaknesses
     const improvementTemplates = {
       clarity: {
-        clear_instructions: (p) => `Add explicit action verb at the start. Example: "Create a function that..." instead of passive description.`,
-        no_ambiguity: (p) => `Replace hedging language with definitive statements. Change "might" to "will", "possibly" to "must".`,
-        structured: (p) => `Organize with headers, bullet points, or numbered steps:\n\n## Task\n[Description]\n\n## Requirements\n- [Requirement 1]\n- [Requirement 2]\n\n## Output\n[Expected format]`,
+        clear_instructions: (_p) => `Add explicit action verb at the start. Example: "Create a function that..." instead of passive description.`,
+        no_ambiguity: (_p) => `Replace hedging language with definitive statements. Change "might" to "will", "possibly" to "must".`,
+        structured: (_p) => `Organize with headers, bullet points, or numbered steps:\n\n## Task\n[Description]\n\n## Requirements\n- [Requirement 1]\n- [Requirement 2]\n\n## Output\n[Expected format]`,
         concise: (p) => `Reduce prompt to essential instructions. Current length: ${p.split(/\s+/).length} words. Target: under 200 words for most tasks.`,
-        no_jargon: (p) => `Replace formal terms with plain language. Use "use" instead of "utilize", "include" instead of "incorporate".`,
+        no_jargon: (_p) => `Replace formal terms with plain language. Use "use" instead of "utilize", "include" instead of "incorporate".`,
       },
       specificity: {
-        concrete_examples: (p) => `Add input/output example:\n\nExample:\nInput: [sample input]\nExpected Output: [sample output]`,
-        output_format: (p) => `Specify format explicitly: "Return as JSON with fields: {name, type, description}" or "Use markdown table format".`,
-        constraints: (p) => `Add hard constraints: "Must complete in under 100ms", "Cannot modify existing tests", "Always use TypeScript".`,
-        specific_domain: (p) => `Reference specific technologies: "Using React hooks", "For PostgreSQL database", "With Express.js middleware".`,
-        measurable_criteria: (p) => `Add success metrics: "Score must be > 80%", "Response time < 200ms", "Coverage > 90%".`,
+        concrete_examples: (_p) => `Add input/output example:\n\nExample:\nInput: [sample input]\nExpected Output: [sample output]`,
+        output_format: (_p) => `Specify format explicitly: "Return as JSON with fields: {name, type, description}" or "Use markdown table format".`,
+        constraints: (_p) => `Add hard constraints: "Must complete in under 100ms", "Cannot modify existing tests", "Always use TypeScript".`,
+        specific_domain: (_p) => `Reference specific technologies: "Using React hooks", "For PostgreSQL database", "With Express.js middleware".`,
+        measurable_criteria: (_p) => `Add success metrics: "Score must be > 80%", "Response time < 200ms", "Coverage > 90%".`,
       },
       completeness: {
-        input_specified: (p) => `Define input: "Given a user object with fields: id (number), name (string), email (string)".`,
-        output_specified: (p) => `Define output: "Return a UserDTO with fields: {id, displayName, isVerified}".`,
-        edge_cases: (p) => `Add edge case handling:\n- If input is null/undefined, return empty result\n- If validation fails, throw descriptive error\n- If network fails, retry once`,
-        context_provided: (p) => `Add context: "This is for an e-commerce checkout flow where users..." or "Purpose: Improve search ranking by..."`,
-        scope_defined: (p) => `Define scope: "Only modify src/utils/, do not touch tests or config files." or "Scope: authentication module only."`,
+        input_specified: (_p) => `Define input: "Given a user object with fields: id (number), name (string), email (string)".`,
+        output_specified: (_p) => `Define output: "Return a UserDTO with fields: {id, displayName, isVerified}".`,
+        edge_cases: (_p) => `Add edge case handling:\n- If input is null/undefined, return empty result\n- If validation fails, throw descriptive error\n- If network fails, retry once`,
+        context_provided: (_p) => `Add context: "This is for an e-commerce checkout flow where users..." or "Purpose: Improve search ranking by..."`,
+        scope_defined: (_p) => `Define scope: "Only modify src/utils/, do not touch tests or config files." or "Scope: authentication module only."`,
       },
       edge_cases: {
-        error_handling: (p) => `Specify: "On error, return {error: string, code: number}". "Wrap in try/catch and log errors."`,
-        empty_input: (p) => `Handle empty: "If array is empty, return []. If string is empty, return null."`,
-        boundary_conditions: (p) => `Set boundaries: "Input length: 1-1000 chars". "Array size: 0-100 elements". "Concurrent requests: max 10".`,
-        conflict_resolution: (p) => `Define priority: "If both rules apply, prefer the more specific one". "Use config value over default".`,
-        performance_considerations: (p) => `Note constraints: "O(n) time complexity required". "Cache results for 5 minutes". "Batch API calls".`,
+        error_handling: (_p) => `Specify: "On error, return {error: string, code: number}". "Wrap in try/catch and log errors."`,
+        empty_input: (_p) => `Handle empty: "If array is empty, return []. If string is empty, return null."`,
+        boundary_conditions: (_p) => `Set boundaries: "Input length: 1-1000 chars". "Array size: 0-100 elements". "Concurrent requests: max 10".`,
+        conflict_resolution: (_p) => `Define priority: "If both rules apply, prefer the more specific one". "Use config value over default".`,
+        performance_considerations: (_p) => `Note constraints: "O(n) time complexity required". "Cache results for 5 minutes". "Batch API calls".`,
       },
     };
 

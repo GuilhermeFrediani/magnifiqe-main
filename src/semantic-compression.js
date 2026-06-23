@@ -56,7 +56,7 @@ const TIER2_DELETE_IF_CONTEXT_CLEAR = [
   { regex: /\bdoes\b/gi, replacement: "", label: "aux-does", contextCheck: () => true },
   // Modal verbs (safe to remove when intent is already clear from context)
   { regex: /\bcan\b/gi, replacement: "", label: "modal-can", contextCheck: () => true },
-  { regex: /\bcould\b/gi, replacement: "", label: "modal-could", contextCheck: (text, match) => !/could\s+mean|could\s+be\s+uncertain/i.test(text) },
+  { regex: /\bcould\b/gi, replacement: "", label: "modal-could", contextCheck: (text, _match) => !/could\s+mean|could\s+be\s+uncertain/i.test(text) },
   { regex: /\bmay\b/gi, replacement: "", label: "modal-may", contextCheck: () => true },
   { regex: /\bmight\b/gi, replacement: "", label: "modal-might", contextCheck: () => false }, // uncertainty marker — preserve
   { regex: /\bshould\b/gi, replacement: "", label: "modal-should", contextCheck: () => false }, // requirement — preserve
@@ -232,7 +232,6 @@ function applyTier2(text) {
   for (const rule of TIER2_DELETE_IF_CONTEXT_CLEAR) {
     const before = result;
     // Find all matches and process individually
-    let offset = 0;
     result = result.replace(rule.regex, (match, ...args) => {
       const matchIndex = typeof args[args.length - 2] === "number" ? args[args.length - 2] : args[0];
 
@@ -247,8 +246,6 @@ function applyTier2(text) {
       // Skip code blocks
       if (isInCodeBlock(text, matchIndex)) return match;
 
-      const oldLen = match.length;
-      offset -= oldLen; // replacement is "" so offset adjustment needed for subsequent matches
       return rule.replacement;
     });
     if (result !== before) deletions++;
@@ -270,7 +267,7 @@ function applyTier3(text) {
 
   for (const rule of TIER3_DELETE_IF_OBVIOUS) {
     const before = result;
-    result = result.replace(rule.regex, (match, ...args) => {
+    result = result.replace(rule.regex, (match, ..._args) => {
       if (shouldPreserve(match)) return match;
       return rule.replacement;
     });

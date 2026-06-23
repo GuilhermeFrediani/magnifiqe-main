@@ -124,7 +124,7 @@ function extractToolRegistrations(filePath) {
     }
 
     return tools;
-  } catch (err) {
+  } catch {
     return [];
   }
 }
@@ -346,7 +346,7 @@ export function analyzeToolDescriptions(srcDir = SRC_DIR) {
           files.push(fullPath);
         }
       }
-    } catch (err) {
+    } catch {
       // ignore
     }
     return files;

@@ -14,7 +14,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { LearnTrigger } from '../src/learn-trigger.js';
-import { withRateLimit } from '../src/rate-limiter.js';
 import { compressToolOutput, decompressOutput } from '../src/compression-orchestrator.js';
 
 // ─── CRITICAL-5/6: compress/decompress try-catch ────────────────────────
@@ -55,7 +54,6 @@ describe('HIGH-5: learn-trigger setInterval async callback', () => {
     const trigger = new LearnTrigger({ intervalMs: 50 });
 
     // Monkey-patch runCycle to reject
-    const origRunCycle = trigger.runCycle.bind(trigger);
     trigger.runCycle = async () => { throw new Error('test rejection'); };
 
     // Start should not throw — the .catch() handles rejections

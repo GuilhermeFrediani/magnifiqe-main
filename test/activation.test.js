@@ -236,8 +236,7 @@ describe('get_prompt_script', () => {
     const { server, tools } = createMockServer();
     registerActivationTools(server);
 
-    const result = await tools.get_prompt_script.handler({ name: 'nonexistent' });
-    const text = mockResponse(result);
+    await tools.get_prompt_script.handler({ name: 'nonexistent' });
 
     // Invalid names are rejected by z.enum validation, so this tests the schema
     // The handler itself won't be called with invalid names due to Zod validation

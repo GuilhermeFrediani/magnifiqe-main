@@ -823,8 +823,8 @@ const IDE_ISSUES = {
 // ─── Tool: adapt_for_ide ─────────────────────────────────────────────────────
 function adaptOutputForIDE(content, ide, outputType) {
   const notes = [];
-  let adapted = content;
-  let format = "text";
+  let adapted;
+  let format;
 
   switch (ide) {
     case "cursor":
@@ -967,7 +967,6 @@ function matchIssue(ide, issueDescription) {
 
   for (const [key, issue] of Object.entries(issueBank)) {
     const keywords = key.replace(/_/g, " ").split(" ");
-    const allText = `${issue.diagnosis} ${key} ${issue.possible_causes.join(" ")}`.toLowerCase();
     let score = 0;
 
     for (const keyword of keywords) {

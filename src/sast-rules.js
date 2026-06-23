@@ -8,10 +8,9 @@
  */
 
 import { z } from "zod";
-import { readFileSync, existsSync, statSync } from "fs";
-import { resolve, extname, relative, isAbsolute } from "path";
+import { readFileSync, existsSync } from "fs";
+import { resolve, extname } from "path";
 import { safeResolvePath } from "./helpers.js";
-import { rateLimiter } from "./rate-limiter.js";
 import { PROJECT_ROOT } from "./config.js";
 
 // ─── SAST Rule Definitions ──────────────────────────────────────────────────

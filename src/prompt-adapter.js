@@ -11,7 +11,7 @@
 
 import { z } from "zod";
 import { rateLimiter } from "./rate-limiter.js";
-import { PROFILES, MODEL_ALIASES, resolveProfile } from "./profiles.js";
+import { PROFILES, resolveProfile } from "./profiles.js";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
@@ -189,27 +189,13 @@ const TASK_REASONS = {
 // ─── Prompt Transformation Engine ───────────────────────────────────────────
 
 /**
- * Detect which model family a prompt was likely written for (heuristic).
- * Returns the profile id or "generic" if no strong signal.
- */
-function detectPromptOrigin(prompt) {
-  const lower = prompt.toLowerCase();
-  if (lower.includes("evidence-first") || lower.includes("cache-friendly") || lower.includes("bullet points")) return "claude";
-  if (lower.includes("checklist") || lower.includes("structured output") || lower.includes("result-oriented")) return "gpt";
-  if (lower.includes("source attribution") || lower.includes("fact-based") || lower.includes("grounded")) return "gemini";
-  if (lower.includes("acceptance criteria") || lower.includes("chain-of-thought") || lower.includes("explicit state")) return "glm";
-  if (lower.includes("single-task") || lower.includes("hard stop") || lower.includes("one hypothesis")) return "mimo";
-  return "generic";
-}
-
-/**
  * Extract existing structure signals from a prompt.
  */
 function analyzePromptStructure(prompt) {
   const hasSections = /^#{1,6}\s/m.test(prompt);
-  const hasBullets = /^[\-\*]\s/m.test(prompt);
+  const hasBullets = /^[-*]\s/m.test(prompt);
   const hasCodeBlocks = /```/.test(prompt);
-  const hasSteps = /^\d+[\.\)]\s/m.test(prompt);
+  const hasSteps = /^\d+[.)]\s/m.test(prompt);
   const hasXMLTags = /<[a-z][a-z0-9]*>/.test(prompt);
   const lineCount = prompt.split("\n").length;
   const wordCount = prompt.split(/\s+/).length;
@@ -451,7 +437,7 @@ function adaptForMiMo(prompt, taskType, analysis) {
 /**
  * Generic transformations for unrecognized models.
  */
-function adaptGeneric(prompt, taskType) {
+function adaptGeneric(prompt, _taskType) {
   const adaptations = [];
   let adapted = prompt;
 

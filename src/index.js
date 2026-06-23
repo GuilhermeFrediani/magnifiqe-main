@@ -21,7 +21,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { resolve } from "path";
 
 // ─── Modules ───────────────────────────────────────────────────────────────
 import { RULES_DIR, PROJECT_ROOT } from "./config.js";

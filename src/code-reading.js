@@ -6,7 +6,6 @@
 
 import { z } from "zod";
 import { existsSync } from "fs";
-import { resolve } from "path";
 import { readFile, validateAbsolutePath } from "./helpers.js";
 import { rateLimiter } from "./rate-limiter.js";
 import { parse as parseLoose } from "acorn-loose";

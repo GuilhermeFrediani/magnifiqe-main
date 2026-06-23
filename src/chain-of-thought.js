@@ -404,7 +404,6 @@ function buildReasoningChain(problem, domain, depth) {
 
   // Depth controls how many elaboration steps per phase
   const depthMultiplier = { shallow: 1, medium: 2, deep: 3 }[depth] || 2;
-  const tokenEstimatePerStep = { shallow: 50, medium: 100, deep: 200 }[depth] || 100;
 
   const chain = [];
   let stepNum = 1;
@@ -430,7 +429,7 @@ function buildReasoningChain(problem, domain, depth) {
 /**
  * Generate a targeted prompt for a single reasoning step.
  */
-function generatePromptForStep(phase, stepDescription, problem, domain) {
+function generatePromptForStep(phase, stepDescription, problem, _domain) {
   const problemRef = `"${problem}"`;
 
   const promptMap = {
@@ -621,7 +620,6 @@ function synthesizeConclusion(chain, confidenceThreshold) {
   }
 
   const allText = chain.map((c) => c.content || "").join("\n");
-  const wordFreq = computeWordFrequency(allText);
 
   // Extract key findings — sentences that appear analytical or conclusive
   const keyFindings = extractKeyFindings(chain);
@@ -629,7 +627,7 @@ function synthesizeConclusion(chain, confidenceThreshold) {
   const recommendations = extractRecommendations(allText);
 
   // Compute confidence based on chain quality signals
-  let confidence = computeConfidence(chain, allText, keyFindings, uncertainties);
+  const confidence = computeConfidence(chain, allText, keyFindings, uncertainties);
 
   // Generate the synthesis conclusion
   const conclusion = generateConclusionText(chain, keyFindings, uncertainties, recommendations);
@@ -646,35 +644,6 @@ function synthesizeConclusion(chain, confidenceThreshold) {
   };
 }
 
-/**
- * Compute word frequency across all chain content.
- */
-function computeWordFrequency(text) {
-  const freq = {};
-  const stopWords = new Set([
-    "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "could",
-    "should", "may", "might", "can", "shall", "to", "of", "in", "for",
-    "on", "with", "at", "by", "from", "as", "into", "about", "this",
-    "that", "it", "its", "and", "or", "but", "not", "if", "then",
-    "so", "than", "too", "very", "just", "also", "what", "which",
-    "who", "whom", "how", "when", "where", "why", "all", "each",
-    "every", "both", "few", "more", "most", "other", "some", "such",
-    "no", "only", "own", "same", "their", "them", "they", "these",
-    "those", "through", "during", "before", "after", "above", "below",
-    "between", "because", "while", "until", "again", "further", "once",
-    "here", "there", "up", "down", "out", "off", "over", "under",
-    "need", "should", "must",
-  ]);
-
-  const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-  for (const w of words) {
-    if (!stopWords.has(w)) {
-      freq[w] = (freq[w] || 0) + 1;
-    }
-  }
-  return freq;
-}
 
 /**
  * Extract key findings from chain steps.

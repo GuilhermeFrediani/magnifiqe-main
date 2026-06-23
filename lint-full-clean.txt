@@ -1,0 +1,180 @@
+
+> stack-perfeita-mcp@4.8.0 lint
+> eslint src/ test/
+
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\anti-delirium.js
+   17:19  warning  'extname' is defined but never used              no-unused-vars
+   19:20  warning  'safeResolvePath' is defined but never used      no-unused-vars
+  425:9   warning  'verifiable' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\chain-of-thought.js
+  407:9   warning  'tokenEstimatePerStep' is assigned a value but never used  no-unused-vars
+  433:65  warning  'domain' is defined but never used                         no-unused-vars
+  624:9   warning  'wordFreq' is assigned a value but never used              no-unused-vars
+  632:7   error    'confidence' is never reassigned. Use 'const' instead      prefer-const
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\code-reading.js
+    9:10  warning  'resolve' is defined but never used  no-unused-vars
+  196:30  warning  '_parent' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\commands\triage.js
+  11:7  warning  'PRIORITY_LABELS' is assigned a value but never used  no-unused-vars
+  12:7  warning  'TYPE_LABELS' is assigned a value but never used      no-unused-vars
+  13:7  warning  'SCOPE_LABELS' is assigned a value but never used     no-unused-vars
+  14:7  warning  'STATUS_LABELS' is assigned a value but never used    no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\compaction.js
+  201:30  warning  '_cp' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\context-manager.js
+  10:10  warning  'PROFILES' is defined but never used                             no-unused-vars
+  14:5   error    'currentContextTokens' is never reassigned. Use 'const' instead  prefer-const
+  80:7   error    Spaces are hard to count. Use {4}                                no-regex-spaces
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\error-recovery.js
+    8:10  warning  'rateLimiter' is defined but never used               no-unused-vars
+  478:62  warning  'project_context' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\ide-rules.js
+  826:7   error    The value assigned to 'adapted' is not used in subsequent statements  no-useless-assignment
+  827:7   error    The value assigned to 'format' is not used in subsequent statements   no-useless-assignment
+  970:11  warning  'allText' is assigned a value but never used                          no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\index.js
+  24:10  warning  'resolve' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\llm-scaffolder.js
+    8:23  warning  'readFileSync' is defined but never used             no-unused-vars
+    8:37  warning  'statSync' is defined but never used                 no-unused-vars
+  481:7   error    'numbered' is never reassigned. Use 'const' instead  prefer-const
+  648:60  error    Unnecessary escape character: \.                     no-useless-escape
+  648:62  error    Unnecessary escape character: \)                     no-useless-escape
+  729:34  warning  'i' is defined but never used                        no-unused-vars
+  764:14  warning  'task' is defined but never used                     no-unused-vars
+  840:37  warning  'file' is defined but never used                     no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\output-enforcer.js
+   478:7    warning  'CONTEXT_PATTERNS' is assigned a value but never used                                no-unused-vars
+   586:7    warning  'hasAnyContent' is assigned a value but never used                                   no-unused-vars
+   662:9    warning  'lower' is assigned a value but never used                                           no-unused-vars
+   709:10   warning  'scoreStandardization' is defined but never used                                     no-unused-vars
+   844:29   error    Unnecessary escape character: \[                                                     no-useless-escape
+  1244:9    warning  Unused eslint-disable directive (no problems were reported from 'no-control-regex')
+  1245:143  error    Unexpected combined character in character class                                     no-misleading-character-class
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\output-formats.js
+  213:9  warning  'formatRules' is assigned a value but never used                           no-unused-vars
+  214:7  error    The value assigned to 'formatted' is not used in subsequent statements     no-useless-assignment
+  215:7  error    The value assigned to 'templateUsed' is not used in subsequent statements  no-useless-assignment
+  390:9  warning  'sections' is assigned a value but never used                              no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\perf-benchmark.js
+    9:10  warning  'rateLimiter' is defined but never used        no-unused-vars
+   57:10  warning  'rebuildAggregates' is defined but never used  no-unused-vars
+  114:10  warning  'findStrengths' is defined but never used      no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\project-state.js
+  333:30  warning  '_ignored' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\prompt-adapter.js
+   14:20  warning  'MODEL_ALIASES' is defined but never used       no-unused-vars
+  195:10  warning  'detectPromptOrigin' is defined but never used  no-unused-vars
+  210:25  error    Unnecessary escape character: \-                no-useless-escape
+  210:27  error    Unnecessary escape character: \*                no-useless-escape
+  212:26  error    Unnecessary escape character: \.                no-useless-escape
+  212:28  error    Unnecessary escape character: \)                no-useless-escape
+  454:31  warning  'taskType' is defined but never used            no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\prompt-conventions.js
+  236:12  warning  'fullTag' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\prompt-testing.js
+   13:10  warning  'rateLimiter' is defined but never used            no-unused-vars
+  421:11  warning  'improvements' is assigned a value but never used  no-unused-vars
+  449:30  warning  'p' is defined but never used                      no-unused-vars
+  450:24  warning  'p' is defined but never used                      no-unused-vars
+  451:22  warning  'p' is defined but never used                      no-unused-vars
+  453:21  warning  'p' is defined but never used                      no-unused-vars
+  456:29  warning  'p' is defined but never used                      no-unused-vars
+  457:25  warning  'p' is defined but never used                      no-unused-vars
+  458:23  warning  'p' is defined but never used                      no-unused-vars
+  459:27  warning  'p' is defined but never used                      no-unused-vars
+  460:31  warning  'p' is defined but never used                      no-unused-vars
+  463:27  warning  'p' is defined but never used                      no-unused-vars
+  464:28  warning  'p' is defined but never used                      no-unused-vars
+  465:22  warning  'p' is defined but never used                      no-unused-vars
+  466:28  warning  'p' is defined but never used                      no-unused-vars
+  467:25  warning  'p' is defined but never used                      no-unused-vars
+  470:26  warning  'p' is defined but never used                      no-unused-vars
+  471:23  warning  'p' is defined but never used                      no-unused-vars
+  472:31  warning  'p' is defined but never used                      no-unused-vars
+  473:31  warning  'p' is defined but never used                      no-unused-vars
+  474:38  warning  'p' is defined but never used                      no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\safety-guards.js
+  124:38  warning  '_toolName' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\sast-rules.js
+  11:36  warning  'statSync' is defined but never used     no-unused-vars
+  12:28  warning  'relative' is defined but never used     no-unused-vars
+  12:38  warning  'isAbsolute' is defined but never used   no-unused-vars
+  14:10  warning  'rateLimiter' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\semantic-compression.js
+   59:87  warning  'match' is defined but never used            no-unused-vars
+  235:9   warning  'offset' is assigned a value but never used  no-unused-vars
+  273:52  warning  'args' is defined but never used             no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\task-checklists.js
+  337:17  warning  'fileExts' is assigned a value but never used     no-unused-vars
+  340:17  warning  'tsOrJsFiles' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\src\tool-prompt-analyzer.js
+  127:12  warning  'err' is defined but never used  no-unused-vars
+  349:14  warning  'err' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\activation.test.js
+  240:11  warning  'text' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\checkpoint-rewind.test.js
+   14:3   warning  'loadState' is defined but never used          no-unused-vars
+   15:3   warning  'saveState' is defined but never used          no-unused-vars
+   42:26  warning  '_ignored' is assigned a value but never used  no-unused-vars
+  276:34  warning  'handler' is defined but never used            no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\cicd-validator.test.js
+  79:7  warning  'GITHUB_ACTIONS_TOKEN_EXPOSURE' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\critical-fixes-regression.test.js
+  12:32  warning  'safeResolvePath' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\high-error-handling-regression.test.js
+  17:10  warning  'withRateLimit' is defined but never used          no-unused-vars
+  58:11  warning  'origRunCycle' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\project-state.test.js
+  94:13  warning  'checkpoints' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\scripts-schemas.test.js
+  439:22  error    Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  440:22  error    Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  441:22  error    Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  531:11  warning  'skillDir' is assigned a value but never used                              no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\session-memory.test.js
+   84:13  warning  'result' is assigned a value but never used  no-unused-vars
+  279:13  warning  'result' is assigned a value but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\todo-manager.test.js
+  32:5  warning  'originalConfig' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\validators-handlers.test.js
+  37:10  warning  'cleanup' is defined but never used  no-unused-vars
+
+C:\Users\Guilherme\Desktop\magnifiqe-main\test\watchdog.test.js
+  7:24  warning  'beforeEach' is defined but never used  no-unused-vars
+
+✖ 106 problems (19 errors, 87 warnings)
+  4 errors and 1 warning potentially fixable with the `--fix` option.
+

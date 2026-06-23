@@ -29,7 +29,6 @@ function createMockServer() {
 }
 
 // Override config to use test file
-let originalConfig;
 async function setupTestEnv() {
   // Patch the module's config import for testing
   process.env.TODO_STATE_FILE = TEST_STATE_FILE;

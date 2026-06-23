@@ -6,14 +6,6 @@
 import { z } from "zod";
 import { rateLimiter } from "../rate-limiter.js";
 
-// ─── Label Taxonomy ──────────────────────────────────────────────────────────
-
-const PRIORITY_LABELS = ["P0-critical", "P1-high", "P2-medium", "P3-low"];
-const TYPE_LABELS = ["bug", "feature", "security", "performance", "documentation"];
-const SCOPE_LABELS = ["frontend", "backend", "infra", "tooling", "docs"];
-const STATUS_LABELS = ["needs-triage", "confirmed", "wontfix", "duplicate"];
-
-
 // ─── Keyword Patterns ────────────────────────────────────────────────────────
 
 const PRIORITY_PATTERNS = [

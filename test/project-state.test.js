@@ -91,7 +91,7 @@ describe('Checkpoint behavior via real persistence', () => {
   it('should persist checkpoints without nesting checkpoint history in snapshot', () => {
     const state = defaultState();
     state.objective = 'Build API';
-    const { checkpoints, ...rest } = state;
+    const { checkpoints: _checkpoints, ...rest } = state;
     state.checkpoints.push({
       label: 'before-refactor',
       timestamp: new Date().toISOString(),

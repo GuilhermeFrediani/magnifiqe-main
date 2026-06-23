@@ -6,7 +6,7 @@
 
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { rateLimiter, withRateLimit } from "./rate-limiter.js";
+import { withRateLimit } from "./rate-limiter.js";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
@@ -51,15 +51,6 @@ function computeScore(run) {
   return Math.max(0, Math.min(100, score));
 }
 
-/**
- * Rebuilds modelAggregates from benchmarkRuns.
- */
-function rebuildAggregates() {
-  modelAggregates.clear();
-  for (const run of benchmarkRuns) {
-    updateAggregate(run);
-  }
-}
 
 /**
  * Adds a run to the model aggregates map.
@@ -108,19 +99,6 @@ function detectTaskType(description) {
   return "code_gen"; // default
 }
 
-/**
- * Finds top strength task types for a model aggregate.
- */
-function findStrengths(agg) {
-  const strengths = [];
-  for (const [taskType, scores] of Object.entries(agg.strength_scores)) {
-    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-    if (avg >= 60) {
-      strengths.push(taskType);
-    }
-  }
-  return strengths.length > 0 ? strengths : ["general"];
-}
 
 /**
  * Returns a JSON text response wrapping the data.

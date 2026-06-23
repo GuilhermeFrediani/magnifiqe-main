@@ -5,7 +5,7 @@
  */
 
 import { z } from "zod";
-import { rateLimiter, withRateLimit } from "./rate-limiter.js";
+import { withRateLimit } from "./rate-limiter.js";
 
 // ─── Error Patterns Database ──────────────────────────────────────────────
 
@@ -475,7 +475,7 @@ function assessSeverity(category, text) {
 
 // ─── Recovery Plan Generation ─────────────────────────────────────────────
 
-function generateRecoveryPlan(error_category, failed_action, project_context = "") {
+function generateRecoveryPlan(error_category, failed_action, _project_context = "") {
   const strategy = RECOVERY_STRATEGIES[error_category] || RECOVERY_STRATEGIES.runtime;
 
   const steps = strategy.steps.map((action, i) => {

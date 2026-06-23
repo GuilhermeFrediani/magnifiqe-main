@@ -210,9 +210,8 @@ function formatByTaskType(content, taskType, format) {
   if (!template) throw new Error(`Unknown task type: ${taskType}`);
 
   const sections = template.sections;
-  const formatRules = template.format_rules[format];
-  let formatted = "";
-  let templateUsed = "";
+  let formatted;
+  let templateUsed;
 
   switch (format) {
     case "detailed":
@@ -387,7 +386,6 @@ function validateCompleteness(content, taskType) {
   const template = OUTPUT_TEMPLATES[taskType];
   if (!template) throw new Error(`Unknown task type: ${taskType}`);
 
-  const sections = template.sections;
   const requiredFields = template.required_fields;
   const missingSections = [];
   const suggestions = [];

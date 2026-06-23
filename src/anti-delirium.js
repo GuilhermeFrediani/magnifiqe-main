@@ -14,9 +14,9 @@
 
 import { z } from "zod";
 import { existsSync, readFileSync, readdirSync } from "fs";
-import { resolve, extname } from "path";
+import { resolve } from "path";
 import { rateLimiter } from "./rate-limiter.js";
-import { readFile, safeResolvePath } from "./helpers.js";
+import { readFile } from "./helpers.js";
 import { PROJECT_ROOT, RULE_DESCRIPTIONS } from "./config.js";
 
 // ── Constants ───────────────────────────────────────────────────────────────
@@ -422,7 +422,6 @@ function computeConfidence(text) {
 
   // 5. Unverifiable claims ratio
   const unverifiable = claims.filter((c) => !c.verifiable).length;
-  const verifiable = claims.filter((c) => c.verifiable).length;
   if (claims.length > 0 && unverifiable / claims.length > 0.7) {
     score -= 12;
     warnings.push(`${unverifiable}/${claims.length} claims are unverifiable — higher fabrication risk`);

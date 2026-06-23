@@ -5,7 +5,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { mkdtempSync, writeFileSync, rmSync } from 'fs';
+import { mkdtempSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { registerValidatorsTools } from '../src/validators.js';
@@ -34,11 +34,6 @@ function makeTempDir(prefix = 'validators-test-') {
   return dir;
 }
 
-function cleanup() {
-  while (tempRoots.length) {
-    rmSync(tempRoots.pop(), { recursive: 'force', force: true });
-  }
-}
 
 // ─── Registration ─────────────────────────────────────────────────────────────
 

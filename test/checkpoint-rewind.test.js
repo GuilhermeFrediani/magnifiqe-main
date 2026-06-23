@@ -11,8 +11,6 @@ import {
 } from '../src/semantic-compression.js';
 
 import {
-  loadState,
-  saveState,
   defaultState,
   registerProjectStateTools,
 } from '../src/project-state.js';
@@ -273,7 +271,7 @@ describe('Tool Registration', () => {
   it('should have tier parameter with default value 2', () => {
     const calls = [];
     const mockServer = {
-      tool: (name, desc, schema, handler) => {
+      tool: (name, desc, schema, _handler) => {
         calls.push({ name, schema });
       },
     };

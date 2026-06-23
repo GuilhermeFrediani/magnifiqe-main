@@ -475,29 +475,6 @@ const FILLER_PATTERNS = [
   /\b(depending on the|in terms of|with respect to|in the context of)\b/gi,
 ];
 
-const CONTEXT_PATTERNS = {
-  completion: {
-    markers: /\b(done|complete|finished|implemented|added|fixed|created|updated)\b/i,
-    opener: null,
-    closer: null,
-  },
-  error: {
-    markers: /\b(error|fail|exception|crash|broken|abort)\b/i,
-    opener: null,
-    closer: null,
-  },
-  question: {
-    markers: /\?$/,
-    opener: null,
-    closer: null,
-  },
-  proposal: {
-    markers: /\b(propos|suggest|recommend|plan|approach|design|architecture)\b/i,
-    opener: null,
-    closer: null,
-  },
-};
-
 // ─── Helper functions ────────────────────────────────────────────────────────
 
 /**
@@ -539,7 +516,6 @@ function detectOrphanedContent(text) {
   const orphans = [];
   let inCodeBlock = false;
   let hasSections = false;
-  let hasAnyContent = false;
 
   // Check if there are any sections at all
   for (const line of lines) {
@@ -583,7 +559,6 @@ function detectOrphanedContent(text) {
     }
 
     if (beforeAnySection && hasSections) {
-      hasAnyContent = true;
       orphans.push({ line: i + 1, text: trimmed });
     }
   }
@@ -659,7 +634,6 @@ function detectMissingSections(text, format) {
   const schema = FORMAT_SCHEMAS[format];
   if (!schema || !schema.restructure) return [];
 
-  const lower = text.toLowerCase();
   const missing = [];
 
   if (format === "bug-report") {
@@ -701,83 +675,6 @@ function detectMissingSections(text, format) {
   }
 
   return missing;
-}
-
-/**
- * Score text for standardization compliance.
- */
-function scoreStandardization(text, context) {
-  let score = 10;
-  const issues = [];
-  const suggestions = [];
-
-  const wc = wordCount(text);
-
-  // Word count bounds by context
-  const WC_LIMITS = {
-    completion: { min: 3, max: 200 },
-    error: { min: 3, max: 150 },
-    question: { min: 2, max: 100 },
-    proposal: { min: 10, max: 400 },
-  };
-  const limits = WC_LIMITS[context] || WC_LIMITS.completion;
-
-  if (wc > limits.max) {
-    score -= 2;
-    issues.push(`Word count ${wc} exceeds ${context} limit of ${limits.max}`);
-    suggestions.push("Trim verbose explanations; lead with the answer.");
-  }
-  if (wc < limits.min && wc > 0) {
-    score -= 1;
-    issues.push(`Word count ${wc} is below minimum ${limits.min} for ${context}`);
-    suggestions.push("Add必要的 detail to make the response actionable.");
-  }
-
-  // Filler detection
-  let fillerCount = 0;
-  for (const pattern of FILLER_PATTERNS) {
-    const matches = text.match(pattern) || [];
-    fillerCount += matches.length;
-  }
-  if (fillerCount > 0) {
-    score -= Math.min(3, fillerCount);
-    issues.push(`${fillerCount} filler phrase(s) detected`);
-    suggestions.push("Remove filler — state the fact directly.");
-  }
-
-  // Process narration detection
-  const narrationPatterns = /\b(I'm going to analyze|Let me look at|I'll start by|First, I'll|Now I will)\b/gi;
-  const narrationMatches = text.match(narrationPatterns) || [];
-  if (narrationMatches.length > 0) {
-    score -= Math.min(2, narrationMatches.length);
-    issues.push(`${narrationMatches.length} process narration(s) detected`);
-    suggestions.push("Don't narrate your process; show the result.");
-  }
-
-  // Evidence-first check: for completion/error, the key fact should be in the first line
-  if (context === "completion" || context === "error") {
-    const firstLine = text.split("\n")[0].trim();
-    const hasImmediateAnswer = /\b(done|fixed|pass|fail|error|halt|warn|created|added|removed)\b/i.test(firstLine);
-    if (!hasImmediateAnswer && wc > 15) {
-      score -= 1;
-      issues.push("Key fact not in first line");
-      suggestions.push("Lead with the outcome, then explain if needed.");
-    }
-  }
-
-  // Check for orphaned content (no structure)
-  const hasStructure = /^#{1,6}\s+/m.test(text) || /^[-*]\s+/m.test(text) || /^\d+[.)]\s+/m.test(text);
-  if (!hasStructure && wc > 30) {
-    score -= 1;
-    issues.push("Long response without structural formatting");
-    suggestions.push("Add headings or bullet points for scannability.");
-  }
-
-  return {
-    score: Math.max(0, Math.min(10, score)),
-    issues,
-    suggestions,
-  };
 }
 
 // ─── Tool Registration ───────────────────────────────────────────────────────
@@ -841,7 +738,7 @@ export function registerOutputEnforcerTools(server) {
       const hasBullets = /^[-*]\s+/m.test(text);
       const hasCheckboxes = /^[-*]\s*\[[ x]\]/m.test(text);
       const hasTable = /^\|.+\|$/m.test(text);
-      const hasJson = /^\s*[\[{]/.test(text.trim()) && /[\]}]\s*$/.test(text.trim());
+      const hasJson = /^\s*[{[]/.test(text.trim()) && /[}\]]\s*$/.test(text.trim());
 
       if (hasHeadings) changes.push("Detected existing markdown headings");
       if (hasBullets) changes.push("Detected existing bullet list");
@@ -1241,8 +1138,7 @@ export function registerOutputEnforcerTools(server) {
       // ─── Strip emoji if IDE doesn't support them ─────────────────────────
       if (!prefs.emoji) {
         const before = formatted;
-        // eslint-disable-next-line no-control-regex
-        formatted = formatted.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}]/gu, "");
+        formatted = formatted.replace(/\p{Emoji}/gu, "");
         if (formatted !== before) {
           adaptations.push("Removed emoji characters (IDE does not render emoji)");
         }

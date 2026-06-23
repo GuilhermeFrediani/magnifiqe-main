@@ -436,9 +436,9 @@ describe('agent-cli.js', () => {
     const { execSync } = await import('node:child_process');
     const output = execSync(`node ${cliPath} validate ${join(skillDir, 'SKILL.md')} --output json`, { encoding: 'utf-8' });
     const result = JSON.parse(output);
-    assert.ok(result.hasOwnProperty('valid'), 'should have valid field');
-    assert.ok(result.hasOwnProperty('errors'), 'should have errors field');
-    assert.ok(result.hasOwnProperty('frontmatter'), 'should have frontmatter field');
+    assert.ok(Object.prototype.hasOwnProperty.call(result, 'valid'), 'should have valid field');
+    assert.ok(Object.prototype.hasOwnProperty.call(result, 'errors'), 'should have errors field');
+    assert.ok(Object.prototype.hasOwnProperty.call(result, 'frontmatter'), 'should have frontmatter field');
     cleanup();
   });
 
@@ -528,7 +528,7 @@ tags: only-one
   });
 
   it('discover-skills handles corrupted SKILL.md', () => {
-    const skillDir = createSkillDir('corrupted', 'This is not valid markdown at all');
+    createSkillDir('corrupted', 'This is not valid markdown at all');
     const skills = discoverSkills(TEST_SKILLS_DIR);
     // Should not crash, may return skill with empty frontmatter
     assert.ok(Array.isArray(skills), 'should return array');

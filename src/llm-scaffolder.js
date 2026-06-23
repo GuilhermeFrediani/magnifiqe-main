@@ -5,7 +5,7 @@
  */
 
 import { z } from "zod";
-import { readdirSync, readFileSync, statSync } from "fs";
+import { readdirSync } from "fs";
 import { join, extname, relative } from "path";
 import { rateLimiter } from "./rate-limiter.js";
 import { PROJECT_ROOT } from "./config.js";
@@ -478,7 +478,7 @@ function simplifyInstructions(instructions, targetModel) {
   }
 
   // Step 4: Add structure markers
-  let numbered = simplifiedSentences.map((s, i) => `${i + 1}. ${s.trim()}`);
+  const numbered = simplifiedSentences.map((s, i) => `${i + 1}. ${s.trim()}`);
   simplified = numbered.join("\n\n");
   changes.push("Added numbered structure for sequential processing");
 
@@ -645,7 +645,7 @@ function validateReasoningChain(reasoning, expectedConclusion) {
   }
 
   // Check 5: Does the conclusion actually follow from the reasoning?
-  const reasoningSegments = reasoning.split(/\n\s*\n|\n\d+[\.\)]\s|\. (?=[A-Z])/).filter((s) => s.trim().length > 10);
+  const reasoningSegments = reasoning.split(/\n\s*\n|\n\d+[.)]\s|\. (?=[A-Z])/).filter((s) => s.trim().length > 10);
   if (reasoningSegments.length >= 2) {
     const lastSegment = normalizeText(reasoningSegments[reasoningSegments.length - 1]);
     const conclusionPresent = conclusionWords.some((w) => lastSegment.includes(w));
@@ -726,7 +726,7 @@ export function registerLLMScaffolderTools(server) {
           ...steps.map((s, i) => `  ${i + 1}. ${s}`),
           "",
           "CHECKPOINTS:",
-          ...checkpoints.map((c, i) => `  ✓ ${c}`),
+          ...checkpoints.map((c) => `  ✓ ${c}`),
         ].join("\n");
 
         return {
@@ -761,7 +761,7 @@ export function registerLLMScaffolderTools(server) {
         .default(3)
         .describe("Maximum number of examples to return"),
     },
-    async ({ task, file_path, max_examples }) => {
+    async ({ _task, file_path, max_examples }) => {
       const rateLimitHit = rateLimiter.check("inject_few_shot");
       if (rateLimitHit) {
         return { content: [{ type: "text", text: rateLimitHit }] };
@@ -837,7 +837,7 @@ export function registerLLMScaffolderTools(server) {
 
         return {
           content: [{ type: "text", text: outputLines.join("\n") }],
-          examples: examples.map(({ file, ...rest }) => rest),
+          examples: examples.map(({ file: _file, ...rest }) => rest),
           prompt_addition: promptAddition,
         };
       } catch (e) {

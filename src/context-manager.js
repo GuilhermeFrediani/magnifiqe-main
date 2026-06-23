@@ -7,11 +7,11 @@
 
 import { z } from "zod";
 import { rateLimiter } from "./rate-limiter.js";
-import { PROFILES, MODEL_ALIASES } from "./profiles.js";
+import { MODEL_ALIASES } from "./profiles.js";
 
 // ─── Internal State ──────────────────────────────────────────────────────
 
-let currentContextTokens = 0;
+const currentContextTokens = 0;
 
 const TOKENS_PER_WORD = 1.33;
 const TOKENS_PER_CHAR = 0.25;
@@ -77,7 +77,7 @@ function classifyLine(line) {
   // Fenced code block markers
   if (/^```/.test(trimmed)) return "code";
   // Indented code (4+ spaces or tab)
-  if (/^(\t|    )/.test(line)) return "code";
+  if (/^(\t| {4})/.test(line)) return "code";
   // Markdown structural elements
   if (/^#{1,6}\s/.test(trimmed)) return "markdown";
   if (/^[-*+]\s/.test(trimmed)) return "markdown";

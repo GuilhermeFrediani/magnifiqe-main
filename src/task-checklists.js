@@ -334,12 +334,6 @@ export function registerTaskChecklistsTools(server) {
 
         // Context-aware recommendations based on file types
         if (project_files && project_files.length > 0) {
-          const fileExts = new Set(
-            project_files.map((f) => f.split(".").pop().toLowerCase())
-          );
-          const tsOrJsFiles = project_files.some((f) =>
-            /\.(ts|js|tsx|jsx|mjs)$/.test(f)
-          );
           const cssOrHtmlFiles = project_files.some((f) =>
             /\.(css|scss|less|html|vue|svelte)$/.test(f)
           );
