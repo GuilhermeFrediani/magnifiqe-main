@@ -19,3 +19,4 @@ graphify-out/
 .claude/task_runtime.json
 test/_tmp_code_reading/
 PLAN-DE-CORRECAO.md
+.claude/*.bak
