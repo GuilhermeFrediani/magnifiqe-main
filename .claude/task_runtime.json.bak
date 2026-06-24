@@ -7,7 +7,7 @@
     "acceptance_criteria": "All tests pass, coverage > 80%",
     "risks": "Breaking existing login flow",
     "minimum_evidence": "Test suite green + manual login test",
-    "created_at": "2026-06-24T19:47:22.258Z"
+    "created_at": "2026-06-24T20:05:06.899Z"
   },
   "contracts_history": [
     {
@@ -18,9 +18,9 @@
       "acceptance_criteria": "All tests pass, coverage > 80%",
       "risks": "Breaking existing login flow",
       "minimum_evidence": "Test suite green + manual login test",
-      "created_at": "2026-06-24T19:47:22.258Z"
+      "created_at": "2026-06-24T20:05:06.899Z"
     }
   ],
   "evidence_log": [],
-  "updated_at": "2026-06-24T19:47:22.258Z"
+  "updated_at": "2026-06-24T20:05:06.900Z"
 }

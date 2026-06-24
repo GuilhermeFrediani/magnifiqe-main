@@ -1,7 +1,7 @@
 {
   "name": "stack-perfeita-mcp",
-  "version": "4.8.0",
-  "description": "MCP server that disciplines coding agents with validation, state checkpoints, context control, compression, security scanning, and 79+ tools.",
+  "version": "5.0.0",
+  "description": "MCP server that disciplines coding agents with validation, state checkpoints, context control, compression, security scanning, token economy, and 174 tools.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
