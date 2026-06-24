@@ -82,10 +82,19 @@ import { registerPromptVersioningTools } from "./prompt-versioning.js";
 import { registerPromptTestingTools } from "./prompt-testing.js";
 // Phase 4: IDE-specific rules (GAP-7)
 import { registerIDERulesTools } from "./ide-rules.js";
+// Phase 5 (ECC-imported): Verification Loop, Eval Harness, Token Budget
+import { registerVerificationLoopTools } from "./verification-loop.js";
+import { registerEvalHarnessTools } from "./eval-harness.js";
+import { registerTokenBudgetTools } from "./token-budget.js";
 
 // Observability
 import { logger } from "./observability/logger.js";
 import { metrics } from "./observability/metrics.js";
+import { registerContinuousLearningTools } from "./continuous-learning.js";
+import { registerPromptOptimizerTools } from "./prompt-optimizer.js";
+import { registerIntentDrivenDevTools } from "./intent-driven-dev.js";
+import { registerErrorHandlingPatternsTools } from "./error-handling-patterns.js";
+import { registerSantaMethodTools } from "./santa-method.js";
 
 // Safety
 import { checkRateLimit } from "./safety-guards.js";
@@ -106,7 +115,7 @@ console.log = (...args) => process.stderr.write(args.map(a => typeof a === 'stri
 // ─── Server ────────────────────────────────────────────────────────────────
 const server = new McpServer({
   name: "stack-perfeita-mcp",
-  version: "4.8.0",
+  version: "4.9.0",
 });
 
 // ─── Register all tools and resources ──────────────────────────────────────
@@ -161,6 +170,18 @@ registerOutputFormatsTools(server);
 registerPromptVersioningTools(server);
 registerPromptTestingTools(server);
 registerIDERulesTools(server);
+// Phase 5 (ECC-imported): Verification Loop, Eval Harness, Token Budget
+registerVerificationLoopTools(server);
+registerEvalHarnessTools(server);
+registerTokenBudgetTools(server);
+// Phase 5b (ECC-imported): Continuous Learning, Prompt Optimizer
+registerContinuousLearningTools(server);
+registerPromptOptimizerTools(server);
+// Phase 5c (ECC-imported): Intent-Driven Dev, Error Handling Patterns
+registerIntentDrivenDevTools(server);
+registerErrorHandlingPatternsTools(server);
+// Phase 5d (ECC-imported): Santa Method (Adversarial Verification)
+registerSantaMethodTools(server);
 // ─── Tool: compress_markdown (CCR-enhanced) ────────────────────────────────
 server.tool(
   "compress_markdown",
