@@ -95,6 +95,10 @@ import { registerPromptOptimizerTools } from "./prompt-optimizer.js";
 import { registerIntentDrivenDevTools } from "./intent-driven-dev.js";
 import { registerErrorHandlingPatternsTools } from "./error-handling-patterns.js";
 import { registerSantaMethodTools } from "./santa-method.js";
+import { registerMcpShrinkTools } from "./mcp-shrink.js";
+import { registerTokenProfileTools } from "./token-profiles.js";
+import { registerSmartCmdTools } from "./smart-cmd.js";
+import { registerCompressMemoryTools } from "./compress-memory.js";
 
 // Safety
 import { checkRateLimit } from "./safety-guards.js";
@@ -115,7 +119,7 @@ console.log = (...args) => process.stderr.write(args.map(a => typeof a === 'stri
 // ─── Server ────────────────────────────────────────────────────────────────
 const server = new McpServer({
   name: "stack-perfeita-mcp",
-  version: "4.9.0",
+  version: "5.0.0",
 });
 
 // ─── Register all tools and resources ──────────────────────────────────────
@@ -182,6 +186,14 @@ registerIntentDrivenDevTools(server);
 registerErrorHandlingPatternsTools(server);
 // Phase 5d (ECC-imported): Santa Method (Adversarial Verification)
 registerSantaMethodTools(server);
+// Token Economy: MCP Shrink Middleware (compresses tool descriptions)
+registerMcpShrinkTools(server);
+// Token Economy: Profile-based tool filtering
+registerTokenProfileTools(server);
+// Token Economy: Smart Command Wrapper (filters shell output)
+registerSmartCmdTools(server);
+// Token Economy: Compress Memory Files (caveman-style)
+registerCompressMemoryTools(server);
 // ─── Tool: compress_markdown (CCR-enhanced) ────────────────────────────────
 server.tool(
   "compress_markdown",

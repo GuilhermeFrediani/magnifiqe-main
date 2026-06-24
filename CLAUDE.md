@@ -63,18 +63,29 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## Stack Perfeita MCP Rules
 
-### Activation Protocol
-At session start, ALWAYS:
-1. Call `activate_project()` to load project context
-2. Call `doctor_runtime_setup()` to verify environment
-3. Call `get_rules_bundle("karpathy")` to load behavioral guidelines
-4. Call `start_task_contract(...)` to define success criteria
+### Activation Protocol (Session Start)
+At session start, ALWAYS call in this order:
+1. `activate_project()` — load project context
+2. `doctor_runtime_setup()` — verify environment
+3. `get_rules_bundle("karpathy")` — load behavioral guidelines
+4. `shrink_stats()` — show token savings potential
+5. `profile_status()` — show current token profile
+6. `start_task_contract(...)` — define success criteria
+
+### Token Economy (Always Active)
+Before EVERY response, apply token economy:
+- Use `shrink_text()` to compress verbose output
+- Use `smart_cmd()` instead of raw shell commands
+- Use `compress_memory_preview()` to check compression before applying
+- Keep profile at `core` or `lean` for daily work
+- Use `tiny` profile for quick questions
 
 ### Output Validation
 Before shipping code or claiming success:
 - Run `validate_bad_code` for code blocks
 - Run `dependency_validate` when new imports/assets were introduced
 - Run `validate_response_style` before long explanatory prose
+- Run `santa_review` for adversarial verification
 - Record proof with `assert_step_evidence(...)`
 
 ### Behavioral Rules
@@ -82,6 +93,7 @@ Before shipping code or claiming success:
 - Zero excitation tokens: no filler, no warm-up, no process narration
 - Rule of 2: same failure twice → HALT and report root cause
 - Never declare success without proof
+- Always use token economy tools to minimize consumption
 
 ---
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://modelcontextprotocol.io/schema/mcp-server-config.json",
   "name": "stack-perfeita-mcp",
-  "version": "4.8.0",
-  "description": "MCP server for code discipline: validation, checkpoints, context control, compression, security scanning, and Karpathy anti-slop guidelines.",
+  "version": "5.0.0",
+  "description": "MCP server for code discipline with Karpathy anti-slop, token economy, and modular architecture enforcement.",
   "mcpServers": {
     "stack-perfeita": {
       "command": "node",
@@ -18,9 +18,34 @@
     "tools": [
       "activate_project",
       "doctor_runtime_setup",
-      "get_rules_bundle"
+      "get_rules_bundle",
+      "shrink_stats",
+      "profile_status"
     ],
     "description": "These tools are called automatically at session start"
+  },
+  "tokenEconomy": {
+    "enabled": true,
+    "profile": "core",
+    "tools": [
+      "shrink_text",
+      "shrink_tool_descriptions",
+      "shrink_stats",
+      "profile_select",
+      "profile_status",
+      "profile_filter_tools",
+      "smart_cmd",
+      "smart_cmd_batch",
+      "compress_memory_file",
+      "compress_memory_batch",
+      "compress_memory_preview"
+    ],
+    "autoCall": {
+      "onSessionStart": ["shrink_stats", "profile_status"],
+      "onToolCall": ["shrink_tool_descriptions"],
+      "onCodeOutput": ["shrink_text"],
+      "description": "Token economy tools called automatically to minimize token consumption"
+    }
   },
   "karpathyGuidelines": {
     "enabled": true,
@@ -36,6 +61,13 @@
       "enabled": true,
       "validation": "karpathy-hooks",
       "description": "Validates Karpathy guidelines before each tool call"
+    },
+    "tokenEconomy": {
+      "enabled": true,
+      "compressDescriptions": true,
+      "filterByProfile": true,
+      "smartCmdForShell": true,
+      "description": "Token economy hooks applied automatically"
     }
   }
 }
