@@ -34,7 +34,7 @@ const HEX_HASH_PATTERN = /\b[0-9a-f]{32,64}\b/g;
 /**
  * Detect volatile content in text.
  * @param {string} text
- * @returns {{ uuid: number, iso8601: number, jwt: number, hexHash: number }}
+ * @returns \{\{ uuid: number, iso8601: number, jwt: number, hexHash: number \}\}
  */
 export function detectVolatileContent(text) {
   if (!text || typeof text !== "string") return { uuid: 0, iso8601: 0, jwt: 0, hexHash: 0 };
@@ -83,7 +83,7 @@ export class CacheAligner {
   /**
    * Analyze text for volatile content.
    * @param {string} text
-   * @returns {{ volatile: { uuid: number, iso8601: number, jwt: number, hexHash: number }, prefixHash: string, prefixChanged: boolean, totalVolatile: number }}
+   * @returns \{\{ volatile: { uuid: number, iso8601: number, jwt: number, hexHash: number }, prefixHash: string, prefixChanged: boolean, totalVolatile: number \}\}
    */
   analyze(text) {
     const volatile = detectVolatileContent(text);
