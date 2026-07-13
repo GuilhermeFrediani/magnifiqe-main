@@ -65,7 +65,7 @@ function estimateTokens(text) {
  * @param {string} [opts.toolName] - Tool name for metrics tracking
  * @param {number} [opts.targetTokens] - Target token count for compression
  * @param {number} [opts.contextWindow] - Model context window size
- * @returns {{ compressed: string, original: string, stats: object, sentinel: string|null }}
+ * @returns \{\{ compressed: string, original: string, stats: object, sentinel: string|null \}\}
  */
 export function compressToolOutput(text, opts = {}) {
   const { toolName = "unknown", targetTokens, contextWindow } = opts;
@@ -164,7 +164,7 @@ export function compressToolOutput(text, opts = {}) {
  * Decompress a sentinel-marked output by retrieving the original.
  * @param {string} hash - Sentinel hash from compressToolOutput
  * @param {string} [query] - Optional query for filtered retrieval
- * @returns {{ found: boolean, original: string|null, metadata: object|null }}
+ * @returns \{\{ found: boolean, original: string|null, metadata: object|null \}\}
  */
 export function decompressOutput(hash, query = null) {
   const result = compressionStore.retrieve(hash, query);
@@ -176,7 +176,7 @@ export function decompressOutput(hash, query = null) {
 
 /**
  * Get compression stats for observability.
- * @returns {{ storeSize: number, circuitBreaker: object, cacheAlignerDetections: number }}
+ * @returns \{\{ storeSize: number, circuitBreaker: object, cacheAlignerDetections: number \}\}
  */
 export function getCompressionStats() {
   return {
