@@ -202,7 +202,7 @@ export function aggressiveCompress(text) {
  * @param {number} [opts.forceLevel] - Force a specific compression level
  * @param {number} [opts.contextWindow] - Model context window size
  * @param {string} [opts.toolName] - Source tool name for metadata
- * @returns {{ compressed: string, level: number, contentType: string, volatileCount: number, stored: boolean, hash: string|null }}
+ * @returns {Object} compression result with compressed, level, contentType, volatileCount, stored, and hash fields
  */
 export function compress(text, opts = {}) {
   if (!text || text.length === 0) {

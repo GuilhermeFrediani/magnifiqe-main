@@ -112,7 +112,7 @@ export function detectContentType(text) {
  * Split mixed content into typed sections.
  * Handles code fences, JSON blocks, and mixed text.
  * @param {string} content
- * @returns {{ type: ContentType, text: string }[]}
+ * @returns {Array<{ type: ContentType, text: string }>}
  */
 export function splitIntoSections(content) {
   if (!content) return [];
