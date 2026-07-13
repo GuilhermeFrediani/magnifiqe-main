@@ -140,7 +140,7 @@ describe('extractSymbolsAST', () => {
   });
 
   it('should return empty array for unparseable code', () => {
-    const code = '{{{{ not valid at all';
+    const code = '<<<< not valid at all';
     const symbols = extractSymbolsAST(code);
     // acorn-loose is very tolerant, but if it fails we get empty array
     assert.ok(Array.isArray(symbols));

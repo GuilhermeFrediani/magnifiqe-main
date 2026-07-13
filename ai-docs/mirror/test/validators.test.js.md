@@ -151,7 +151,7 @@ function bar(x) {
   });
 
   it('should handle parse errors gracefully', () => {
-    const code = 'this is not valid {{{{ javascript';
+    const code = 'this is not valid <<<< javascript';
     const metrics = analyzeCodeMetrics(code);
     assert.ok(metrics.lineCount > 0);
     assert.deepStrictEqual(metrics.functions, []);
